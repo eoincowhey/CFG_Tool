@@ -5,8 +5,10 @@
 
 import pandas as pd
 
-Header = ['PSB Eoin Cowhey V1.00', '1997']
-Output_Types = ['6', '6A', '0D']
+Name_version = "PSB Shishe V1.00"
+
+Header = Name_version + ", '1997'"
+Output_Types = "'6', '6A', '0D'"
 
 #OP_No = ['1', '2', '3', '4', '5', '6']
 #OP_Name = ['VL1', 'VL2', 'VL3', 'VL4', 'VL5', 'VL6']
@@ -32,11 +34,11 @@ Output_6 = ['6', 'IL3', '164', 'A', '0.001465144', '-2.99988224', '0.00E+00', '0
 Outputs = pd.DataFrame([Output_1, Output_2, Output_3, Output_4, Output_5, Output_6])
 print(Outputs)
 
-System_Frequecy = '50.00'
+System_Frequency = "50.00"
 Next = "1"
-Sampling_Rate = ['1000', '2000']
-Trigger_Time = ['04/08/2022', '21:56:50']
-Stop_Time = ['04/08/2022', '21:56:52']
+Sampling_Rate = "'1000', '2000'"
+Trigger_Time = "'04/08/2022', '21:56:50'"
+Stop_Time = "'04/08/2022', '21:56:52'"
 Main_Format = "ASCII"
 Final = "1.0"
 
@@ -75,10 +77,12 @@ print(Times_t)
 #f.close()
 
 Output_s = Outputs.to_string(header=False, index=False)
-print(Output_s)
+Output_x = Header + "\n" + Output_Types + "\n" + Output_s + "\n" + System_Frequency + "\n" + Next + "\n" + Sampling_Rate + "\n" + Trigger_Time + "\n" + Stop_Time + "\n" + Main_Format + "\n" + Final
+
+print(Output_x)
 
 with open(filepath, "w") as f:   # Opens file and casts as f
-    f.write(Output_s)# + f.name)       # Writing
+    f.write(Output_x)# + f.name)       # Writing
     # File closed automatically
 
 #Times_t.to_csv(filepath2, index=False, header=False)
