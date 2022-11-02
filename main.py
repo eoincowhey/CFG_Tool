@@ -10,6 +10,60 @@ Name_version = "PSB Shishe V1.00"
 Header = Name_version + ", '1997'"
 Output_Types = "'6', '6A', '0D'"
 
+# Input information
+Source_1_Freq = 50
+Source_2_Freq = 49.5
+V_Nom = 57.74
+V_Fault = 30
+Z_Finish = 20
+Z_Start = 55
+Source_1_Voltage_Phi = 0
+Source_2_Voltage_Phi = 0
+Source_1_Current_Phi = 0
+Source_2_Current_Phi = 180
+
+# Instrument transformers
+VT_Primary = 220
+VT_Secondary = 100
+CT_Primary = 2500
+CT_Secondary = 1
+CT_Star_Point = "Busbar"
+
+# Calc values
+T_swing = 1/(Source_1_Freq-Source_2_Freq)
+Source_V1 = V_Fault+(V_Nom-V_Fault)/2
+Source_V2 = (V_Nom-V_Fault)/2
+Source_I1 = ((V_Fault/Z_Finish)-(((V_Fault/Z_Finish)-(V_Nom/Z_Start))/2))
+Source_I2 = (((V_Fault/Z_Finish)-(V_Nom/Z_Start))/2)
+Z_rate = ((Z_Start-Z_Finish)/T_swing)/2
+I_minimum = Source_I1-Source_I2
+
+# Fault record process data
+Recording_bits = 12
+Recording_decimal = (2**Recording_bits)-1
+Sample_rate = 10000  # 10 kHz
+No_of_samples = T_swing * Sample_rate
+Sample_t_res = 1/Sample_rate
+
+# Functions - used to generate lists for sample number and sample time stamp
+def list_range(k, samples, delta):
+    result = list()
+    while k <= samples:
+        result.append(k)
+        k += delta
+    return (result)
+
+alphalist = list_range(0, No_of_samples, 1)
+#print(alphalist)
+
+deltalist = list_range(Sample_t_res, (No_of_samples * Sample_t_res), Sample_t_res)
+print(len(deltalist))
+
+#for num in range(0, int(No_of_samples+1)):
+#    print(num)
+
+
+
 #OP_No = ['1', '2', '3', '4', '5', '6']
 #OP_Name = ['VL1', 'VL2', 'VL3', 'VL4', 'VL5', 'VL6']
 #OP_Units = ['V', 'V', 'V', 'A', 'A', 'A']
