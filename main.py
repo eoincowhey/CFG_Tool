@@ -1,5 +1,4 @@
 # Power Swing Blocking Test Tool V1.00
-#
 # Developed by Eoin Cowhey
 # Copyright Eoin Cowhey 2022
 
@@ -46,6 +45,7 @@ No_of_samples = T_swing * Sample_rate
 Sample_t_res = 1/Sample_rate
 
 # Functions - used to generate lists for sample number and sample time stamp
+# k = offset, samples = max value limit, delta = delta sample
 def list_range(k, samples, delta):
     result = list()
     while k <= samples:
