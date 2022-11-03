@@ -3,6 +3,8 @@
 # Copyright Eoin Cowhey 2022
 
 import pandas as pd
+import numpy as np
+import math
 
 Name_version = "PSB Shishe V1.00"
 
@@ -44,6 +46,10 @@ Sample_rate = 10000  # 10 kHz
 No_of_samples = T_swing * Sample_rate
 Sample_t_res = 1/Sample_rate
 
+# Constants
+#Pi = 3.141592653589793
+
+
 # Functions
 
 # Function 1: used to generate lists for sample number and sample time stamp
@@ -57,14 +63,51 @@ def list_range(k, samples, delta):
 
 
 
-alphalist = list_range(0, No_of_samples, 1)
+Sample_No = list_range(0, No_of_samples, 1)
 #print(alphalist)
 
-deltalist = list_range(Sample_t_res, (No_of_samples * Sample_t_res), Sample_t_res)
-print(len(deltalist))
+Time_Stamp = list_range(Sample_t_res, (No_of_samples * Sample_t_res), Sample_t_res)
+#print(len(deltalist))
 
-#for num in range(0, int(No_of_samples+1)):
-#    print(num)
+Calcs = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
+#print(Calcs)
+
+
+# Power Swing Impedance Calculations
+
+# R Phase
+Calcs['V1_R'] = Source_V1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Voltage_Phi))
+Calcs['V2_R'] = Source_V2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Voltage_Phi))
+Calcs['V1_R + V2_R'] = Calcs['V1_R'] + Calcs['V2_R']
+Calcs['I1_R'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi))
+Calcs['I2_R'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi))
+Calcs['I1_R + I2_R'] = Calcs['I1_R'] + Calcs['I2_R']
+Calcs['Z_R'] = Calcs['V1_R + V2_R'] / Calcs['I1_R + I2_R']
+
+# S Phase
+Calcs['V1_S'] = Source_V1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Voltage_Phi) + math.radians(240))
+Calcs['V2_S'] = Source_V2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Voltage_Phi) + math.radians(240))
+Calcs['V1_S + V2_S'] = Calcs['V1_S'] + Calcs['V2_S']
+Calcs['I1_S'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi) + math.radians(240))
+Calcs['I2_S'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + math.radians(240))
+Calcs['I1_S + I2_S'] = Calcs['I1_S'] + Calcs['I2_S']
+Calcs['Z_S'] = Calcs['V1_S + V2_S'] / Calcs['I1_S + I2_S']
+
+# T Phase
+Calcs['V1_T'] = Source_V1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Voltage_Phi) + math.radians(120))
+Calcs['V2_T'] = Source_V2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Voltage_Phi) + math.radians(120))
+Calcs['V1_T + V2_T'] = Calcs['V1_T'] + Calcs['V2_T']
+Calcs['I1_T'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi) + math.radians(120))
+Calcs['I2_T'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + math.radians(120))
+Calcs['I1_T + I2_T'] = Calcs['I1_T'] + Calcs['I2_T']
+Calcs['Z_T'] = Calcs['V1_T + V2_T'] / Calcs['I1_T + I2_T']
+print(Calcs)
+
+
+# Process Calculations
+
+
+
 
 
 
