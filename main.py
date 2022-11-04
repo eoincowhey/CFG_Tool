@@ -154,12 +154,12 @@ print(Dat_File)
 
 # CFG File
 
-Output_1 = ['1', 'VL1', '5', 'V', VR_Multiplier, VR_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
-Output_2 = ['2', 'VL2', '6', 'V', VS_Multiplier, VS_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
-Output_3 = ['3', 'VL3', '7', 'V', VT_Multiplier, VT_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
-Output_4 = ['4', 'IL1', '162', 'A', IR_Multiplier, IR_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
-Output_5 = ['5', 'IL2', '163', 'A', IS_Multiplier, IS_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
-Output_6 = ['6', 'IL3', '164', 'A', IT_Multiplier, IT_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
+Output_1 = ['1', 'VL1', '1', 'V', VR_Multiplier, VR_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
+Output_2 = ['2', 'VL2', '2', 'V', VS_Multiplier, VS_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
+Output_3 = ['3', 'VL3', '3', 'V', VT_Multiplier, VT_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
+Output_4 = ['4', 'IL1', '4', 'A', IR_Multiplier, IR_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
+Output_5 = ['5', 'IL2', '5', 'A', IS_Multiplier, IS_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
+Output_6 = ['6', 'IL3', '6', 'A', IT_Multiplier, IT_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
 
 Outputs = pd.DataFrame([Output_1, Output_2, Output_3, Output_4, Output_5, Output_6])
 
