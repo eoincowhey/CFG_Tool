@@ -46,9 +46,6 @@ Sample_rate = 10000  # 10 kHz
 No_of_samples = T_swing * Sample_rate
 Sample_t_res = 1/Sample_rate
 
-# Constants
-#Pi = 3.141592653589793
-
 
 # Functions
 
@@ -63,14 +60,10 @@ def list_range(k, samples, delta):
 
 
 Sample_No = list_range(0, No_of_samples, 1)
-#print(alphalist)
-
 Time_Stamp = list_range(Sample_t_res, (No_of_samples * Sample_t_res), Sample_t_res)
-#print(len(deltalist))
 
+Calcs = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
 
-
-Calcs = pd.Series(Time_Stamp)
 
 # Power Swing Impedance Calculations
 
@@ -135,10 +128,8 @@ IT_Min = Calcs['I1_T + I2_T'].min()
 IT_Range = IT_Max - IT_Min
 IT_Multiplier = IT_Range/Recording_decimal
 
-# .dat file
 
-
-# Dat_File = Calcs.merge('Time_Stamp', on='DeviceTimeStamp', how='left')
+# Dat File
 
 Calcs['VR_dat'] = (((Calcs['V1_R + V2_R'] - VR_Min)/VR_Range) * Recording_decimal).astype('int')
 Calcs['VS_dat'] = (((Calcs['V1_S + V2_S'] - VS_Min)/VS_Range) * Recording_decimal).astype('int')
@@ -147,16 +138,22 @@ Calcs['IR_dat'] = (((Calcs['I1_R + I2_R'] - IR_Min)/IR_Range) * Recording_decima
 Calcs['IS_dat'] = (((Calcs['I1_S + I2_S'] - IS_Min)/IS_Range) * Recording_decimal).astype('int')
 Calcs['IT_dat'] = (((Calcs['I1_T + I2_T'] - IT_Min)/IT_Range) * Recording_decimal).astype('int')
 
+Dat_File = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
+Dat_File = Dat_File.merge(Calcs, on='Time Stamp', how='left')
+Dat_File = Dat_File.drop(['V1_R', 'V2_R', 'V1_R + V2_R','I1_R', 'I2_R', 'I1_R + I2_R', 'Z_R'], axis = 'columns')
+Dat_File = Dat_File.drop(['V1_S', 'V2_S', 'V1_S + V2_S','I1_S', 'I2_S', 'I1_S + I2_S', 'Z_S'], axis = 'columns')
+Dat_File = Dat_File.drop(['V1_T', 'V2_T', 'V1_T + V2_T','I1_T', 'I2_T', 'I1_T + I2_T', 'Z_T'], axis = 'columns')
+
 print(Dat_File)
 
+# CFG File
 
-
-Output_1 = ['1', 'VL1', '5', 'A', '0.029303126', '-59.99814949', '0.00E+00', '0', '4095', '2.20E+05', '1.00E+02', 's']
-Output_2 = ['2', 'VL2', '6', 'A', '0.029303126', '-59.99814949', '0.00E+00', '0', '4095', '2.20E+05', '1.00E+02', 's']
-Output_3 = ['3', 'VL3', '7', 'A', '0.029303126', '-59.99814949', '0.00E+00', '0', '4095', '2.20E+05', '1.00E+02', 's']
-Output_4 = ['4', 'IL1', '162', 'A', '0.001465144', '-2.99988224', '0.00E+00', '0', '4095', '2.50E+03', '1.00E+00', 's']
-Output_5 = ['5', 'IL2', '163', 'A', '0.001465144', '-2.99988224', '0.00E+00', '0', '4095', '2.50E+03', '1.00E+00', 's']
-Output_6 = ['6', 'IL3', '164', 'A', '0.001465144', '-2.99988224', '0.00E+00', '0', '4095', '2.50E+03', '1.00E+00', 's']
+Output_1 = ['1', 'VL1', '5', 'V', VR_Multiplier, VR_Min, '0.00E+00', '0', Recording_decimal, '2.20E+05', '1.00E+02', 's']
+Output_2 = ['2', 'VL2', '6', 'V', VS_Multiplier, VS_Min, '0.00E+00', '0', Recording_decimal, '2.20E+05', '1.00E+02', 's']
+Output_3 = ['3', 'VL3', '7', 'V', VT_Multiplier, VT_Min, '0.00E+00', '0', Recording_decimal, '2.20E+05', '1.00E+02', 's']
+Output_4 = ['4', 'IL1', '162', 'A', IR_Multiplier, IR_Min, '0.00E+00', '0', Recording_decimal, '2.50E+03', '1.00E+00', 's']
+Output_5 = ['5', 'IL2', '163', 'A', IS_Multiplier, IS_Min, '0.00E+00', '0', Recording_decimal, '2.50E+03', '1.00E+00', 's']
+Output_6 = ['6', 'IL3', '164', 'A', IT_Multiplier, IT_Min, '0.00E+00', '0', Recording_decimal, '2.50E+03', '1.00E+00', 's']
 
 Outputs = pd.DataFrame([Output_1, Output_2, Output_3, Output_4, Output_5, Output_6])
 print(Outputs)
@@ -170,11 +167,10 @@ Main_Format = "ASCII"
 Final = "1.0"
 
 
-# Output
+# Output Files
 
 with open('CFG.txt') as t:
     contents = t.read()
-
 
 filepath = "C:/Users/eoinc/OneDrive/Desktop/Test121.txt"
 
@@ -182,24 +178,11 @@ filepath2 = "C:/Users/eoinc/OneDrive/Desktop/Table121.txt"
 
 
 
-# last item
-#print(string1)
-
-def index_ESB(n):
-   return [i for i in range(1,n+1)]
-n = 1000
-#print(index_ESB(n))
-
-Times_t = pd.Series(index_ESB(n))/1000
-
-print(Times_t)
-
-
-
-# ############
+# Export Files
 
 Output_s = Outputs.to_string(header=False, index=False)
-Output_x = Header + "\n" + Output_Types + "\n" + Output_s + "\n" + System_Frequency + "\n" + Next + "\n" + Sampling_Rate + "\n" + Trigger_Time + "\n" + Stop_Time + "\n" + Main_Format + "\n" + Final
+Output_x = Header + "\n" + Output_Types + "\n" + Output_s + "\n" + System_Frequency + "\n" + Next + "\n" \
+           + Sampling_Rate + "\n" + Trigger_Time + "\n" + Stop_Time + "\n" + Main_Format + "\n" + Final
 
 print(Output_x)
 
@@ -207,12 +190,12 @@ with open(filepath, "w") as f:   # Opens file and casts as f
     f.write(Output_x)# + f.name)       # Writing
     # File closed automatically
 
-#Times_t.to_csv(filepath2, index=False, header=False)
+# Dat_File.to_csv(filepath2, index=False, header=False)
 
-Times_tee = Times_t.to_string(header=False, index=False)
+Dat_File = Dat_File.to_string(header=False, index=False)
 
 with open(filepath2, "w") as g:   # Opens file and casts as f
-    g.write(Times_tee)
+    g.write(Dat_File)
 
 
 
