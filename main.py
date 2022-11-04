@@ -62,16 +62,15 @@ def list_range(k, samples, delta):
     return (result)
 
 
-
 Sample_No = list_range(0, No_of_samples, 1)
 #print(alphalist)
 
 Time_Stamp = list_range(Sample_t_res, (No_of_samples * Sample_t_res), Sample_t_res)
 #print(len(deltalist))
 
-Calcs = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
-#print(Calcs)
 
+
+Calcs = pd.Series(Time_Stamp)
 
 # Power Swing Impedance Calculations
 
@@ -101,29 +100,56 @@ Calcs['I1_T'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time St
 Calcs['I2_T'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + math.radians(120))
 Calcs['I1_T + I2_T'] = Calcs['I1_T'] + Calcs['I2_T']
 Calcs['Z_T'] = Calcs['V1_T + V2_T'] / Calcs['I1_T + I2_T']
-print(Calcs)
+
 
 
 # Process Calculations
 
+VR_Max = Calcs['V1_R + V2_R'].max()
+VR_Min = Calcs['V1_R + V2_R'].min()
+VR_Range = VR_Max - VR_Min
+VR_Multiplier = VR_Range/Recording_decimal
+
+VS_Max = Calcs['V1_S + V2_S'].max()
+VS_Min = Calcs['V1_S + V2_S'].min()
+VS_Range = VS_Max - VS_Min
+VS_Multiplier = VS_Range/Recording_decimal
+
+VT_Max = Calcs['V1_T + V2_T'].max()
+VT_Min = Calcs['V1_T + V2_T'].min()
+VT_Range = VT_Max - VT_Min
+VT_Multiplier = VT_Range/Recording_decimal
+
+IR_Max = Calcs['I1_R + I2_R'].max()
+IR_Min = Calcs['I1_R + I2_R'].min()
+IR_Range = IR_Max - IR_Min
+IR_Multiplier = IR_Range/Recording_decimal
+
+IS_Max = Calcs['I1_S + I2_S'].max()
+IS_Min = Calcs['I1_S + I2_S'].min()
+IS_Range = IS_Max - IS_Min
+IS_Multiplier = IS_Range/Recording_decimal
+
+IT_Max = Calcs['I1_T + I2_T'].max()
+IT_Min = Calcs['I1_T + I2_T'].min()
+IT_Range = IT_Max - IT_Min
+IT_Multiplier = IT_Range/Recording_decimal
+
+# .dat file
 
 
+# Dat_File = Calcs.merge('Time_Stamp', on='DeviceTimeStamp', how='left')
+
+Calcs['VR_dat'] = (((Calcs['V1_R + V2_R'] - VR_Min)/VR_Range) * Recording_decimal).astype('int')
+Calcs['VS_dat'] = (((Calcs['V1_S + V2_S'] - VS_Min)/VS_Range) * Recording_decimal).astype('int')
+Calcs['VT_dat'] = (((Calcs['V1_T + V2_T'] - VT_Min)/VT_Range) * Recording_decimal).astype('int')
+Calcs['IR_dat'] = (((Calcs['I1_R + I2_R'] - IR_Min)/IR_Range) * Recording_decimal).astype('int')
+Calcs['IS_dat'] = (((Calcs['I1_S + I2_S'] - IS_Min)/IS_Range) * Recording_decimal).astype('int')
+Calcs['IT_dat'] = (((Calcs['I1_T + I2_T'] - IT_Min)/IT_Range) * Recording_decimal).astype('int')
+
+print(Dat_File)
 
 
-
-#OP_No = ['1', '2', '3', '4', '5', '6']
-#OP_Name = ['VL1', 'VL2', 'VL3', 'VL4', 'VL5', 'VL6']
-#OP_Units = ['V', 'V', 'V', 'A', 'A', 'A']
-#OP_Mult = ['0.029303126', '0.029303126', '0.029303126', '0.001465144', '0.001465144', '0.001465144']
-#OP_Min = ['-59.99814949', '-59.99814949', '-59.99814949', '-2.99988224', '-2.99988224', '-2.99988224']
-#OP_Skew = ['0', '0', '0', '0', '0', '0']
-#OP_Bits = ['4095', '4095', '4095', '4095', '4095', '4095']
-#OP_Prim = ['2.20E+05', '2.20E+05', '2.20E+05', '2.50E+03', '2.50E+03', '2.50E+03']
-#OP_Sec = ['1.00E+02', '1.00E+02', '1.00E+02', '1.00E+00', '1.00E+00', '1.00E+00']
-#OP_Rec = ['s', 's', 's', 's', 's', 's']
-
-#Outputs = pd.DataFrame([OP_No, OP_Name, OP_Units, OP_Mult, OP_Min, OP_Skew, OP_Bits, OP_Prim, OP_Sec, OP_Rec])
-#print(Outputs)
 
 Output_1 = ['1', 'VL1', '5', 'A', '0.029303126', '-59.99814949', '0.00E+00', '0', '4095', '2.20E+05', '1.00E+02', 's']
 Output_2 = ['2', 'VL2', '6', 'A', '0.029303126', '-59.99814949', '0.00E+00', '0', '4095', '2.20E+05', '1.00E+02', 's']
@@ -143,11 +169,8 @@ Stop_Time = "'04/08/2022', '21:56:52'"
 Main_Format = "ASCII"
 Final = "1.0"
 
-#Outputs = Output_1# + "\n" + Output_2 + "\n" + Output_3 + "\n" + Output_4 +"\n" + Output_5 +"\n" + Output_6
 
-
-#Total = Header #+ "\n" + Output_Types + "\n" + Outputs + "\n" + System_Frequecy + "\n" + Sampling_Rate + "\n" + Trigger_Time + "\n" + Stop_Time + "\n" + Main_Format + "\n" + Final
-
+# Output
 
 with open('CFG.txt') as t:
     contents = t.read()
@@ -173,9 +196,7 @@ print(Times_t)
 
 
 
-#f = open("C:\Users\eoinc\OneDrive\Desktop\Test121.cfg", "w")   # 'r' for reading and 'w' for writing
-#f.write("Eoin C V1.1" + f.name)    # Write inside file
-#f.close()
+# ############
 
 Output_s = Outputs.to_string(header=False, index=False)
 Output_x = Header + "\n" + Output_Types + "\n" + Output_s + "\n" + System_Frequency + "\n" + Next + "\n" + Sampling_Rate + "\n" + Trigger_Time + "\n" + Stop_Time + "\n" + Main_Format + "\n" + Final
@@ -193,10 +214,7 @@ Times_tee = Times_t.to_string(header=False, index=False)
 with open(filepath2, "w") as g:   # Opens file and casts as f
     g.write(Times_tee)
 
-#Pandas List
-#people_list = ['Jon','Mark','Maria','Jill','Jack']
-#my_series = pd.Series(people_list)
-#print(my_series)
+
 
 
 
