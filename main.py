@@ -8,8 +8,8 @@ import math
 
 Name_version = "PSB Shishe V1.00"
 
-Header = Name_version + ", '1997'"
-Output_Types = "'6', '6A', '0D'"
+Header = Name_version + ", 1997"
+Output_Types = "6, 6A, 0D"
 
 # Input information
 Source_1_Freq = 50
@@ -166,9 +166,9 @@ Outputs = pd.DataFrame([Output_1, Output_2, Output_3, Output_4, Output_5, Output
 
 System_Frequency = "50.00"
 Next = "1"
-Sampling_Rate = "'1000', '2000'"
-Trigger_Time = "'04/08/2022', '21:56:50'"
-Stop_Time = "'04/08/2022', '21:56:52'"
+Sampling_Rate = str(Sample_rate) + ", " + str(int(No_of_samples))
+Trigger_Time = "'00/00/2022', '21:56:5200'"
+Stop_Time = "'00/00/2022', '21:56:5200'"
 Main_Format = "ASCII"
 Final = "1.0"
 
