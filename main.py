@@ -52,9 +52,6 @@ else:
     Busbar_comp = math.radians(0)
 
 
-print(Busbar_comp)
-
-
 # Fault record process data
 Recording_bits = 12
 Recording_decimal = (2**Recording_bits)-1
@@ -165,8 +162,6 @@ Dat_File = Dat_File.drop(['V1_S', 'V2_S', 'V1_S + V2_S','I1_S', 'I2_S', 'I1_S + 
 Dat_File = Dat_File.drop(['V1_T', 'V2_T', 'V1_T + V2_T','I1_T', 'I2_T', 'I1_T + I2_T', 'Z_T'], axis = 'columns')
 Dat_File['Time Stamp'] = (Dat_File['Time Stamp']*1000000).astype(int)
 
-print(Dat_File)
-
 
 # CFG File
 
@@ -191,13 +186,9 @@ Final = "1.0"
 
 # Output Files
 
-#with open('CFG.txt') as t:
-#    contents = t.read()
-
 CFG_filepath = "C:/Users/eoinc/OneDrive/Desktop/EC_Comtrade.cfg"
 
 Dat_filepath = "C:/Users/eoinc/OneDrive/Desktop/EC_Comtrade.dat"
-
 
 
 # Export Files
@@ -206,13 +197,11 @@ Output_s = Outputs.to_string(header=False, index=False)
 Output_x = Header + "\n" + Output_Types + "\n" + Output_s + "\n" + System_Frequency + "\n" + Next + "\n" \
            + Sampling_Rate + "\n" + Trigger_Time + "\n" + Stop_Time + "\n" + Main_Format + "\n" + Final
 
-print(Output_x)
 
 with open(CFG_filepath, "w") as f:   # Opens file and casts as f
-    f.write(Output_x)# + f.name)       # Writing
+    f.write(Output_x) # Writing
     # File closed automatically
 
-# Dat_File.to_csv(filepath2, index=False, header=False)
 
 Dat_File = Dat_File.to_csv(header=False, index=True, sep=',')
 
@@ -221,7 +210,6 @@ with open(Dat_filepath, "w", newline = '') as g:   # Opens file and casts as f
     g.write(Dat_File)
 
 
-#print(Dat_File)
 
 
 
