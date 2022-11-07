@@ -8,8 +8,8 @@ import math
 
 Name_version = "PSB Shishe V1.00"
 
-Header = Name_version + ", 1997"
-Output_Types = "6, 6A, 0D"
+Header = Name_version + "," + "1997"
+Output_Types = "6,6A,0D"
 
 # Input information
 Source_1_Freq = 50
@@ -22,8 +22,9 @@ Source_1_Voltage_Phi = 0
 Source_2_Voltage_Phi = 0
 Source_1_Current_Phi = 0
 Source_2_Current_Phi = 180
+T_swing = 2
 
-# Instrument transformers
+# Instrument Transformers
 VT_Primary = 220
 VT_Secondary = 100
 CT_Primary = 2500
@@ -37,7 +38,7 @@ CTS = format(CT_Secondary,'.2E')
 
 
 # Calc values
-T_swing = 1/(Source_1_Freq-Source_2_Freq)
+T_for_1_swing = 1/(Source_1_Freq-Source_2_Freq)
 Source_V1 = V_Fault+(V_Nom-V_Fault)/2
 Source_V2 = (V_Nom-V_Fault)/2
 Source_I1 = ((V_Fault/Z_Finish)-(((V_Fault/Z_Finish)-(V_Nom/Z_Start))/2))
@@ -45,10 +46,19 @@ Source_I2 = (((V_Fault/Z_Finish)-(V_Nom/Z_Start))/2)
 Z_rate = ((Z_Start-Z_Finish)/T_swing)/2
 I_minimum = Source_I1-Source_I2
 
+if CT_Star_Point == "Busbar":
+    Busbar_comp = math.radians(180)
+else:
+    Busbar_comp = math.radians(0)
+
+
+print(Busbar_comp)
+
+
 # Fault record process data
 Recording_bits = 12
 Recording_decimal = (2**Recording_bits)-1
-Sample_rate = 2400  # e.g. 10 kHz
+Sample_rate = 10000  # e.g. 10 kHz
 No_of_samples = T_swing * Sample_rate
 Sample_t_res = 1/Sample_rate
 
@@ -78,8 +88,8 @@ Calcs = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
 Calcs['V1_R'] = Source_V1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Voltage_Phi))
 Calcs['V2_R'] = Source_V2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Voltage_Phi))
 Calcs['V1_R + V2_R'] = Calcs['V1_R'] + Calcs['V2_R']
-Calcs['I1_R'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi))
-Calcs['I2_R'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi))
+Calcs['I1_R'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi) + Busbar_comp)
+Calcs['I2_R'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + Busbar_comp)
 Calcs['I1_R + I2_R'] = Calcs['I1_R'] + Calcs['I2_R']
 Calcs['Z_R'] = Calcs['V1_R + V2_R'] / Calcs['I1_R + I2_R']
 
@@ -87,8 +97,8 @@ Calcs['Z_R'] = Calcs['V1_R + V2_R'] / Calcs['I1_R + I2_R']
 Calcs['V1_S'] = Source_V1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Voltage_Phi) + math.radians(240))
 Calcs['V2_S'] = Source_V2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Voltage_Phi) + math.radians(240))
 Calcs['V1_S + V2_S'] = Calcs['V1_S'] + Calcs['V2_S']
-Calcs['I1_S'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi) + math.radians(240))
-Calcs['I2_S'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + math.radians(240))
+Calcs['I1_S'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi) + math.radians(240) + Busbar_comp)
+Calcs['I2_S'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + math.radians(240) + Busbar_comp)
 Calcs['I1_S + I2_S'] = Calcs['I1_S'] + Calcs['I2_S']
 Calcs['Z_S'] = Calcs['V1_S + V2_S'] / Calcs['I1_S + I2_S']
 
@@ -96,8 +106,8 @@ Calcs['Z_S'] = Calcs['V1_S + V2_S'] / Calcs['I1_S + I2_S']
 Calcs['V1_T'] = Source_V1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Voltage_Phi) + math.radians(120))
 Calcs['V2_T'] = Source_V2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Voltage_Phi) + math.radians(120))
 Calcs['V1_T + V2_T'] = Calcs['V1_T'] + Calcs['V2_T']
-Calcs['I1_T'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi) + math.radians(120))
-Calcs['I2_T'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + math.radians(120))
+Calcs['I1_T'] = Source_I1 * np.sin((2 * math.pi * Source_1_Freq * Calcs['Time Stamp']) + math.radians(Source_1_Current_Phi) + math.radians(120) + Busbar_comp)
+Calcs['I2_T'] = Source_I2 * np.sin((2 * math.pi * Source_2_Freq * Calcs['Time Stamp']) + math.radians(Source_2_Current_Phi) + math.radians(120) + Busbar_comp)
 Calcs['I1_T + I2_T'] = Calcs['I1_T'] + Calcs['I2_T']
 Calcs['Z_T'] = Calcs['V1_T + V2_T'] / Calcs['I1_T + I2_T']
 
@@ -160,12 +170,12 @@ print(Dat_File)
 
 # CFG File
 
-Output_1 = ['1',',','VL1',',', '1',',', 'V',',', VR_Multiplier,',', VR_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', VTP,',', VTS,',', 's']
-Output_2 = ['2',',','VL2',',', '2',',', 'V',',', VS_Multiplier,',', VS_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', VTP,',', VTS,',', 's']
-Output_3 = ['3',',', 'VL3',',', '3',',', 'V',',', VT_Multiplier,',', VT_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', VTP,',', VTS,',', 's']
-Output_4 = ['4',',', 'IL1',',', '4',',', 'A',',', IR_Multiplier,',', IR_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', CTP,',', CTS,',', 's']
-Output_5 = ['5',',', 'IL2',',', '5',',', 'A',',', IS_Multiplier,',', IS_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', CTP,',', CTS,',', 's']
-Output_6 = ['6',',', 'IL3',',', '6',',', 'A',',', IT_Multiplier,',', IT_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', CTP,',', CTS,',', 's']
+Output_1 = ['1',',','VL1',',','1',',',',','V',',',VR_Multiplier,',',VR_Min,',','0.00E+00',',','0',',',Recording_decimal,',',VTP,',',VTS,',','s']
+Output_2 = ['2',',','VL2',',','2',',',',','V',',',VS_Multiplier,',',VS_Min,',','0.00E+00',',','0',',',Recording_decimal,',',VTP,',',VTS,',','s']
+Output_3 = ['3',',','VL3',',','3',',',',','V',',',VT_Multiplier,',',VT_Min,',','0.00E+00',',','0',',',Recording_decimal,',',VTP,',',VTS,',','s']
+Output_4 = ['4',',','IL1',',','4',',',',','A',',',IR_Multiplier,',',IR_Min,',','0.00E+00',',','0',',',Recording_decimal,',',CTP,',',CTS,',','s']
+Output_5 = ['5',',','IL2',',','5',',',',','A',',',IS_Multiplier,',',IS_Min,',','0.00E+00',',','0',',',Recording_decimal,',',CTP,',',CTS,',','s']
+Output_6 = ['6',',','IL3',',','6',',',',','A',',',IT_Multiplier,',',IT_Min,',','0.00E+00',',','0',',',Recording_decimal,',',CTP,',',CTS,',','s']
 
 Outputs = pd.DataFrame([Output_1, Output_2, Output_3, Output_4, Output_5, Output_6])
 
@@ -184,9 +194,9 @@ Final = "1.0"
 #with open('CFG.txt') as t:
 #    contents = t.read()
 
-CFG_filepath = "C:/Users/eoinc/OneDrive/Desktop/Test123.CFG"
+CFG_filepath = "C:/Users/eoinc/OneDrive/Desktop/EC_Comtrade.cfg"
 
-Dat_filepath = "C:/Users/eoinc/OneDrive/Desktop/Table123.DAT"
+Dat_filepath = "C:/Users/eoinc/OneDrive/Desktop/EC_Comtrade.dat"
 
 
 
@@ -207,12 +217,11 @@ with open(CFG_filepath, "w") as f:   # Opens file and casts as f
 Dat_File = Dat_File.to_csv(header=False, index=True, sep=',')
 
 
-with open(Dat_filepath, "w") as g:   # Opens file and casts as f
+with open(Dat_filepath, "w", newline = '') as g:   # Opens file and casts as f
     g.write(Dat_File)
 
 
-
-print(Dat_File)
+#print(Dat_File)
 
 
 
