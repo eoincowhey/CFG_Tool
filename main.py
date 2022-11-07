@@ -210,7 +210,8 @@ with open(Dat_filepath, "w", newline = '') as g:   # Opens file and casts as f
     g.write(Dat_File)
 
 
-
+print(Output_x)
+#print(Dat_File)
 
 
 
