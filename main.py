@@ -48,7 +48,7 @@ I_minimum = Source_I1-Source_I2
 # Fault record process data
 Recording_bits = 12
 Recording_decimal = (2**Recording_bits)-1
-Sample_rate = 10000  # 10 kHz
+Sample_rate = 2400  # e.g. 10 kHz
 No_of_samples = T_swing * Sample_rate
 Sample_t_res = 1/Sample_rate
 
@@ -67,6 +67,7 @@ def list_range(k, samples, delta):
 
 Sample_No = list_range(0, No_of_samples, 1)
 Time_Stamp = list_range(Sample_t_res, (No_of_samples * Sample_t_res), Sample_t_res)
+
 
 Calcs = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
 
@@ -144,22 +145,27 @@ Calcs['IR_dat'] = (((Calcs['I1_R + I2_R'] - IR_Min)/IR_Range) * Recording_decima
 Calcs['IS_dat'] = (((Calcs['I1_S + I2_S'] - IS_Min)/IS_Range) * Recording_decimal).astype('int')
 Calcs['IT_dat'] = (((Calcs['I1_T + I2_T'] - IT_Min)/IT_Range) * Recording_decimal).astype('int')
 
+
+
 Dat_File = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
 Dat_File = Dat_File.merge(Calcs, on='Time Stamp', how='left')
+
 Dat_File = Dat_File.drop(['V1_R', 'V2_R', 'V1_R + V2_R','I1_R', 'I2_R', 'I1_R + I2_R', 'Z_R'], axis = 'columns')
 Dat_File = Dat_File.drop(['V1_S', 'V2_S', 'V1_S + V2_S','I1_S', 'I2_S', 'I1_S + I2_S', 'Z_S'], axis = 'columns')
 Dat_File = Dat_File.drop(['V1_T', 'V2_T', 'V1_T + V2_T','I1_T', 'I2_T', 'I1_T + I2_T', 'Z_T'], axis = 'columns')
+Dat_File['Time Stamp'] = (Dat_File['Time Stamp']*1000000).astype(int)
 
 print(Dat_File)
 
+
 # CFG File
 
-Output_1 = ['1', 'VL1', '1', 'V', VR_Multiplier, VR_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
-Output_2 = ['2', 'VL2', '2', 'V', VS_Multiplier, VS_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
-Output_3 = ['3', 'VL3', '3', 'V', VT_Multiplier, VT_Min, '0.00E+00', '0', Recording_decimal, VTP, VTS, 's']
-Output_4 = ['4', 'IL1', '4', 'A', IR_Multiplier, IR_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
-Output_5 = ['5', 'IL2', '5', 'A', IS_Multiplier, IS_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
-Output_6 = ['6', 'IL3', '6', 'A', IT_Multiplier, IT_Min, '0.00E+00', '0', Recording_decimal, CTP, CTS, 's']
+Output_1 = ['1',',','VL1',',', '1',',', 'V',',', VR_Multiplier,',', VR_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', VTP,',', VTS,',', 's']
+Output_2 = ['2',',','VL2',',', '2',',', 'V',',', VS_Multiplier,',', VS_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', VTP,',', VTS,',', 's']
+Output_3 = ['3',',', 'VL3',',', '3',',', 'V',',', VT_Multiplier,',', VT_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', VTP,',', VTS,',', 's']
+Output_4 = ['4',',', 'IL1',',', '4',',', 'A',',', IR_Multiplier,',', IR_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', CTP,',', CTS,',', 's']
+Output_5 = ['5',',', 'IL2',',', '5',',', 'A',',', IS_Multiplier,',', IS_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', CTP,',', CTS,',', 's']
+Output_6 = ['6',',', 'IL3',',', '6',',', 'A',',', IT_Multiplier,',', IT_Min,',', '0.00E+00',',', '0',',', Recording_decimal,',', CTP,',', CTS,',', 's']
 
 Outputs = pd.DataFrame([Output_1, Output_2, Output_3, Output_4, Output_5, Output_6])
 
@@ -167,8 +173,8 @@ Outputs = pd.DataFrame([Output_1, Output_2, Output_3, Output_4, Output_5, Output
 System_Frequency = "50.00"
 Next = "1"
 Sampling_Rate = str(Sample_rate) + ", " + str(int(No_of_samples))
-Trigger_Time = "'00/00/2022', '21:56:5200'"
-Stop_Time = "'00/00/2022', '21:56:5200'"
+Trigger_Time = "23/01/2022,04:24:06.978389"
+Stop_Time = "23/01/2022,04:24:07.078389"
 Main_Format = "ASCII"
 Final = "1.0"
 
@@ -178,9 +184,9 @@ Final = "1.0"
 #with open('CFG.txt') as t:
 #    contents = t.read()
 
-CFG_filepath = "C:/Users/eoinc/OneDrive/Desktop/Test123.txt"
+CFG_filepath = "C:/Users/eoinc/OneDrive/Desktop/Test123.CFG"
 
-Dat_filepath = "C:/Users/eoinc/OneDrive/Desktop/Table123.txt"
+Dat_filepath = "C:/Users/eoinc/OneDrive/Desktop/Table123.DAT"
 
 
 
@@ -198,13 +204,15 @@ with open(CFG_filepath, "w") as f:   # Opens file and casts as f
 
 # Dat_File.to_csv(filepath2, index=False, header=False)
 
-Dat_File = Dat_File.to_string(header=False, index=False)
+Dat_File = Dat_File.to_csv(header=False, index=True, sep=',')
 
 
 with open(Dat_filepath, "w") as g:   # Opens file and casts as f
     g.write(Dat_File)
 
 
+
+print(Dat_File)
 
 
 
