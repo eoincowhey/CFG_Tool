@@ -55,12 +55,12 @@ else:
 # Fault record process data
 Recording_bits = 12
 Recording_decimal = (2**Recording_bits)-1
-Sample_rate = 10000  # e.g. 10 kHz
+Sample_rate = 1000  # e.g. 10 kHz
 No_of_samples = T_swing * Sample_rate
 Sample_t_res = 1/Sample_rate
 
 
-# Functions 1
+# Functions
 
 # Function 1: used to generate lists for sample number and sample time stamp
 # k = offset, samples = max value limit, delta = delta sample
@@ -72,6 +72,20 @@ def list_range(k, samples, delta):
     return (result)
 
 
+def Inst(Source, freq, df, phi, phase, starpoint):
+    return(Source * np.sin((2 * math.pi * freq * df) + math.radians(phi) + math.radians(phase)
+                           + math.radians(starpoint)))
+
+def int_conv(df, Min, Range, Rec_dec):
+    return((((df - Min)/Range) * Rec_dec).astype('int'))
+
+def frame_op(No1, Name, No2, var, Mult, Min, Rec_dec, ITP, ITS):
+    return([No1, ',', Name, ',', No2, ', ', ',', var, ',', Mult, ',', Min, ',', '0.00E+00', ',', '0', ',',
+            Rec_dec, ',', ITP, ',', ITS, ',', 's'])
+
+
+# Process Samples
+
 Sample_No = list_range(0, No_of_samples, 1)
 Time_Stamp = list_range(Sample_t_res, (No_of_samples * Sample_t_res), Sample_t_res)
 
@@ -80,13 +94,6 @@ Calcs = pd.DataFrame(Time_Stamp, columns = ['Time Stamp'])
 
 
 # Functions 2
-
-def Inst(Source, freq, df, phi, phase, starpoint):
-    return(Source * np.sin((2 * math.pi * freq * df) + math.radians(phi) + math.radians(phase)
-                           + math.radians(starpoint)))
-
-
-
 
 # Power Swing Impedance Calculations
 # R Phase
@@ -153,10 +160,6 @@ IT_Multiplier = IT_Range/Recording_decimal
 
 # Dat File
 
-def int_conv(df, Min, Range, Rec_dec):
-    return((((df - Min)/Range) * Rec_dec).astype('int'))
-
-
 Calcs['VR_dat'] = int_conv(Calcs['V1_R + V2_R'], VR_Min, VR_Range, Recording_decimal)
 Calcs['VS_dat'] = int_conv(Calcs['V1_S + V2_S'], VS_Min, VS_Range, Recording_decimal)
 Calcs['VT_dat'] = int_conv(Calcs['V1_T + V2_T'], VT_Min, VT_Range, Recording_decimal)
@@ -175,10 +178,6 @@ Dat_File['Time Stamp'] = (Dat_File['Time Stamp']*1000000).astype(int)
 
 
 # CFG File
-
-def frame_op(No1, Name, No2, var, Mult, Min, Rec_dec, ITP, ITS):
-    return([No1,',',Name,',',No2,',',',',var,',',Mult,',',Min,',','0.00E+00',',','0',',',Rec_dec,',',ITP,',',ITS,',','s'])
-
 
 Output_1 = frame_op(1, 'VL1', 1, 'V', VR_Multiplier, VR_Min, Recording_decimal, VTP, VTS)
 Output_2 = frame_op(2, 'VL2', 1, 'V', VS_Multiplier, VS_Min, Recording_decimal, VTP, VTS)
