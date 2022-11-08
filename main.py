@@ -31,10 +31,10 @@ CT_Primary = 2500
 CT_Secondary = 1
 CT_Star_Point = "Busbar"
 
-VTP = format(VT_Primary * 1000,'.2E')
-VTS = format(VT_Secondary,'.2E')
-CTP = format(CT_Primary,'.2E')
-CTS = format(CT_Secondary,'.2E')
+VTP = format(VT_Primary * 1000, '.2E')
+VTS = format(VT_Secondary, '.2E')
+CTP = format(CT_Primary, '.2E')
+CTS = format(CT_Secondary, '.2E')
 
 
 # Calc values
