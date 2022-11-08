@@ -64,13 +64,13 @@ Sample_t_res = 1/Sample_rate
 
 # Function 1: used to generate lists for sample number and sample time stamp
 # k = offset, samples = max value limit, delta = delta sample
+
 def list_range(k, samples, delta):
     result = list()
     while k <= samples:
         result.append(k)
         k += delta
     return (result)
-
 
 def Inst(Source, freq, df, phi, phase, starpoint):
     return(Source * np.sin((2 * math.pi * freq * df) + math.radians(phi) + math.radians(phase)
