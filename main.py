@@ -5,7 +5,26 @@
 import pandas as pd
 import numpy as np
 import math
+import tkinter as tk
+#################GUI#######################
+root = tk.Tk()
+root.geometry("600x600")
+root.title("Power Swing Blocking 2.0")
 
+label = tk.Label(root, text="Hello World", font=('Arial', 16))
+label.pack(padx=20, pady=20)
+
+textbox = tk.Text(root, height=3, font=('Arial', 16))
+textbox.pack(padx=10)
+
+button = tk.Button(root, text="Click Me!", font=('Arial', 18))
+button.pack(padx=10, pady=4)
+
+meentry = tk.Entry(root, font=('Arial',40))
+meentry.pack(padx=10)
+
+root.mainloop()
+##################GUI######################
 Name_version = "PSB Shishe V1.00"
 
 Header = Name_version + "," + "1997"
@@ -71,6 +90,7 @@ def list_range(k, samples, delta):
         result.append(k)
         k += delta
     return (result)
+
 
 def Inst(Source, freq, df, phi, phase, starpoint):
     return(Source * np.sin((2 * math.pi * freq * df) + math.radians(phi) + math.radians(phase)
