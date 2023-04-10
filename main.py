@@ -24,7 +24,7 @@ root.title("Power Swing Blocking 2.0")
 
 meentry = tk.Entry(root, font=('Arial',40))
 meentry.pack(padx=10)
-meentry.insert(0, "Your name is cookie tonster")
+#meentry.insert(0, "Your name is cookie tonster")
 
 def myClick():
     Hello = "Hello " + meentry.get()
@@ -33,6 +33,7 @@ def myClick():
 
 myButton = tk.Button(root, text="Enter your name", command=myClick)
 myButton.pack()
+
 
 root.mainloop()
 ##################GUI######################
