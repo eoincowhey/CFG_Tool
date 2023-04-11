@@ -13,17 +13,20 @@ root.geometry("600x600")
 root.title("Power Swing Blocking 2.0")
 
 
-#label = tk.Label(root, text="Hello World", font=('Arial', 16))
-#label.pack(padx=20, pady=20)
+myvar = tk.StringVar()
+test_freq = tk.StringVar()
 
-#textbox = tk.Text(root, height=3, font=('Arial', 16))
-#textbox.pack(padx=10)
+myvar.set("PSB Program V1.00")
+test_freq.set("50")
 
-#button = tk.Button(root, text="Click Me!", font=('Arial', 18))
-#button.pack(padx=10, pady=4)
-
-meentry = tk.Entry(root, font=('Arial',40))
-meentry.pack(padx=10)
+myLabel1 = tk.Label(root, text="File Name: ")
+myLabel1.pack()
+meentry = tk.Entry(root, font=('Arial',10), textvariable=myvar)
+meentry.pack()#padx=10)
+myLabel2 = tk.Label(root, text="Source Frequency 2: ")
+myLabel2.pack()
+meentry2 = tk.Entry(root, font=('Arial',10), textvariable=test_freq)
+meentry2.pack()#padx=10, pady=30)
 #meentry.insert(0, "Your name is cookie tonster")
 
 def myClick():
@@ -37,15 +40,14 @@ myButton.pack()
 
 root.mainloop()
 ##################GUI######################
-#Im back#
 
-Name_version = "PSB Shishe V1.00"
+Name_version = myvar.get()#"PSB Shishe V1.00"
 
 Header = Name_version + "," + "1997"
 Output_Types = "6,6A,0D"
 
 # Input information
-Source_1_Freq = 50
+Source_1_Freq = float(test_freq.get())#50
 Source_2_Freq = 49.5
 V_Nom = 57.74
 V_Fault = 30
