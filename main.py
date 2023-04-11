@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 import math
 import tkinter as tk
+from tkinter import messagebox
+
 #################GUI#######################
 
 root = tk.Tk()
@@ -13,40 +15,64 @@ root.geometry("600x600")
 root.title("Power Swing Blocking 2.0")
 
 
-#label = tk.Label(root, text="Hello World", font=('Arial', 16))
-#label.pack(padx=20, pady=20)
+myvar = tk.StringVar()
+test_freq = tk.StringVar()
+test_freq2 = tk.StringVar()
 
-#textbox = tk.Text(root, height=3, font=('Arial', 16))
-#textbox.pack(padx=10)
+myvar.set("PSB Program V1.00")
+test_freq.set("50")
+test_freq2.set("49.5")
 
-#button = tk.Button(root, text="Click Me!", font=('Arial', 18))
-#button.pack(padx=10, pady=4)
+myLabel1 = tk.Label(root, text="File Name: ")
+meentry = tk.Entry(root, font=('Arial',10), textvariable=myvar)
+myLabel2 = tk.Label(root, text="Source Frequency 1: ")
+meentry2 = tk.Entry(root, font=('Arial',10), textvariable=test_freq)
+myLabel3 = tk.Label(root, text="Source Frequency 2: ")
+meentry3 = tk.Entry(root, font=('Arial',10), textvariable=test_freq2)
 
-meentry = tk.Entry(root, font=('Arial',40))
-meentry.pack(padx=10)
-#meentry.insert(0, "Your name is cookie tonster")
+#Position
+#myLabel1.grid(row=0,column=0)
+#myLabel.pack()
+#myLabel1.pack(side=tk.LEFT, padx=2, pady=2)
+#myLabel1.pack(side=tk.LEFT, padx=4, pady=2)
+myLabel1.place(x=25, y=20)
+meentry.place(x=150, y=20)
+myLabel2.place(x=25, y=60)
+meentry2.place(x=150, y=60)
+myLabel3.place(x=25, y=100)
+meentry3.place(x=150, y=100)
+
 
 def myClick():
-    Hello = "Hello " + meentry.get()
-    myLabel = tk.Label(root, text=Hello)
-    myLabel.pack()
+    #Datacheck = test_freq2.get().isdigit() and test_freq.get().isdigit()
+    def isfloat(num):
+        try:
+            float(num)
+            return True
+        except ValueError:
+            return False
 
-myButton = tk.Button(root, text="Enter your name", command=myClick)
-myButton.pack()
+    Datacheck = isfloat(test_freq2.get()) and isfloat(test_freq.get())
+    if Datacheck == False:
+        messagebox.showinfo("Numeric Check", "This is not a number or not empty")
 
+
+myButton = tk.Button(root, text="Number Check", command=myClick)
+myButton.place(x=200, y=150)
+
+print(test_freq2.get())
 
 root.mainloop()
-##################GUI######################
-#Im back#
 
-Name_version = "PSB Shishe V1.00"
+##################GUI######################
+Name_version = myvar.get()#"PSB Shishe V1.00"
 
 Header = Name_version + "," + "1997"
 Output_Types = "6,6A,0D"
 
 # Input information
-Source_1_Freq = 50
-Source_2_Freq = 49.5
+Source_1_Freq = float(test_freq.get())#50
+Source_2_Freq = float(test_freq2.get())#49.5
 V_Nom = 57.74
 V_Fault = 30
 Z_Finish = 20
