@@ -1,6 +1,6 @@
 # Power Swing Blocking Test Tool V1.00
 # Developed by Eoin Cowhey
-# Copyright Eoin Cowhey 2022
+# Copyright Eoin Cowhey 2022/2023
 
 import pandas as pd
 import numpy as np
@@ -13,41 +13,62 @@ root = tk.Tk()
 root.geometry("600x600")
 root.title("Power Swing Blocking 2.0")
 
+Version = tk.StringVar()
+S1_Freq = tk.StringVar()
+S2_Freq = tk.StringVar()
 
-#label = tk.Label(root, text="Hello World", font=('Arial', 16))
-#label.pack(padx=20, pady=20)
+#Default Values
+Version.set("PSB Shishe V1.00")
+S1_Freq.set("50")
+S2_Freq.set("49.5")
 
-#textbox = tk.Text(root, height=3, font=('Arial', 16))
-#textbox.pack(padx=10)
+Label_1 = tk.Label(root, font=('Arial',10), text='Program Version:')
+Ve_entry = tk.Entry(root, font=('Arial',10), textvariable=Version)
+Label_2 = tk.Label(root, font=('Arial',10), text='Source 1 Frequency:')
+S1_entry = tk.Entry(root, font=('Arial',10), textvariable=S1_Freq)
+Label_3 = tk.Label(root, font=('Arial',10), text='Source 2 Frequency:')
+S2_entry = tk.Entry(root, font=('Arial',10), textvariable=S2_Freq)
 
-#button = tk.Button(root, text="Click Me!", font=('Arial', 18))
-#button.pack(padx=10, pady=4)
 
-meentry = tk.Entry(root, font=('Arial',40))
-meentry.pack(padx=10)
-#meentry.insert(0, "Your name is cookie tonster")
+#Positioning
+Label_1.place(x=25, y=20)
+Ve_entry.place(x=225, y=20)
+Label_2.place(x=25, y=180)
+S1_entry.place(x=225, y=180)
+Label_3.place(x=25, y=240)
+S2_entry.place(x=225, y=240)
+
 
 def myClick():
-    Hello = "Hello " + meentry.get()
-    myLabel = tk.Label(root, text=Hello)
-    myLabel.pack()
 
-myButton = tk.Button(root, text="Enter your name", command=myClick)
-myButton.pack()
+    def validate_entry(inp):
+        try:
+            float(inp)
+        except:
+            return False
+        return True
 
+    Datacheck = validate_entry(S1_Freq.get()) and validate_entry(S2_Freq.get())
+
+    if Datacheck == False:
+        messagebox.showwarning("Number Validation", "Enter number and can not be blank")
+
+
+myButton = tk.Button(root, text="Check", command=myClick)
+myButton.place(x=25, y=330)
 
 root.mainloop()
-##################GUI######################
-#Im back#
 
-Name_version = "PSB Shishe V1.00"
+##################GUI######################
+
+Name_version = Version.get()#"PSB Shishe V1.00"
 
 Header = Name_version + "," + "1997"
 Output_Types = "6,6A,0D"
 
 # Input information
-Source_1_Freq = 50
-Source_2_Freq = 49.5
+Source_1_Freq = float(S1_Freq.get())#50
+Source_2_Freq = float(S2_Freq.get())#49.5
 V_Nom = 57.74
 V_Fault = 30
 Z_Finish = 20
