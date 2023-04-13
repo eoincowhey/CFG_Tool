@@ -1,6 +1,6 @@
 # Power Swing Blocking Test Tool V1.00
 # Developed by Eoin Cowhey
-# Copyright Eoin Cowhey 2022
+# Copyright Eoin Cowhey 2022/2023
 
 import pandas as pd
 import numpy as np
@@ -10,53 +10,132 @@ from tkinter import messagebox
 #################GUI#######################
 
 root = tk.Tk()
-root.geometry("600x600")
+root.geometry("900x600")
 root.title("Power Swing Blocking 2.0")
 
+Version = tk.StringVar()
+S1_Freq = tk.StringVar()
+S2_Freq = tk.StringVar()
+Nom_Voltage = tk.StringVar()
+Fault_Voltage = tk.StringVar()
+Imp_Start = tk.StringVar()
+Imp_Finish = tk.StringVar()
+S1_Volt_Phase_Angle = tk.StringVar()
+S2_Volt_Phase_Angle = tk.StringVar()
+S1_Current_Phase_Angle = tk.StringVar()
+S2_Current_Phase_Angle = tk.StringVar()
+Swing_Time = tk.StringVar()
 
-#label = tk.Label(root, text="Hello World", font=('Arial', 16))
-#label.pack(padx=20, pady=20)
+#Default Values
+Version.set("PSB Shishe V1.00")
+S1_Freq.set("50")
+S2_Freq.set("49.5")
+Nom_Voltage.set("57.74")
+Fault_Voltage.set("30")
+Imp_Start.set("60")
+Imp_Finish.set("22")
+S1_Volt_Phase_Angle.set("0")
+S2_Volt_Phase_Angle.set("0")
+S1_Current_Phase_Angle.set("0")
+S2_Current_Phase_Angle.set("180")
+Swing_Time.set("2")
 
-#textbox = tk.Text(root, height=3, font=('Arial', 16))
-#textbox.pack(padx=10)
+Label_Ver = tk.Label(root, font=('Arial',10), text='Program Version:')
+Ver_entry = tk.Entry(root, font=('Arial',10), textvariable=Version)
+Label_1 = tk.Label(root, font=('Arial',10), text='Source 1 Frequency:')
+S1_entry = tk.Entry(root, font=('Arial',10), textvariable=S1_Freq)
+Label_2 = tk.Label(root, font=('Arial',10), text='Source 2 Frequency:')
+S2_entry = tk.Entry(root, font=('Arial',10), textvariable=S2_Freq)
+Label_3 = tk.Label(root, font=('Arial',10), text='Healthy Voltage:')
+S3_entry = tk.Entry(root, font=('Arial',10), textvariable=Nom_Voltage)
+Label_4 = tk.Label(root, font=('Arial',10), text='Fault Voltage:')
+S4_entry = tk.Entry(root, font=('Arial',10), textvariable=Fault_Voltage)
+Label_5 = tk.Label(root, font=('Arial',10), text='Start Impedance:')
+S5_entry = tk.Entry(root, font=('Arial',10), textvariable=Imp_Start)
+Label_6 = tk.Label(root, font=('Arial',10), text='Finish Impedance:')
+S6_entry = tk.Entry(root, font=('Arial',10), textvariable=Imp_Finish)
+Label_7 = tk.Label(root, font=('Arial',10), text='S1 Voltage Phi:')
+S7_entry = tk.Entry(root, font=('Arial',10), textvariable=S1_Volt_Phase_Angle)
+Label_8 = tk.Label(root, font=('Arial',10), text='S2 Voltage Phi:')
+S8_entry = tk.Entry(root, font=('Arial',10), textvariable=S2_Volt_Phase_Angle)
+Label_9 = tk.Label(root, font=('Arial',10), text='S1 Current Phi:')
+S9_entry = tk.Entry(root, font=('Arial',10), textvariable=S1_Current_Phase_Angle)
+Label_10 = tk.Label(root, font=('Arial',10), text='S2 Current Phi:')
+S10_entry = tk.Entry(root, font=('Arial',10), textvariable=S2_Current_Phase_Angle)
+Label_11 = tk.Label(root, font=('Arial',10), text='Swing Time:')
+S11_entry = tk.Entry(root, font=('Arial',10), textvariable=Swing_Time)
 
-#button = tk.Button(root, text="Click Me!", font=('Arial', 18))
-#button.pack(padx=10, pady=4)
 
-meentry = tk.Entry(root, font=('Arial',40))
-meentry.pack(padx=10)
-#meentry.insert(0, "Your name is cookie tonster")
+#Positioning
+Label_Ver.place(x=25, y=20)
+Ver_entry.place(x=225, y=20)
+Label_1.place(x=25, y=120)
+S1_entry.place(x=200, y=120)
+Label_2.place(x=450, y=120)
+S2_entry.place(x=625, y=120)
+Label_3.place(x=25, y=170)
+S3_entry.place(x=200, y=170)
+Label_4.place(x=25, y=220)
+S4_entry.place(x=200, y=220)
+Label_5.place(x=25, y=270)
+S5_entry.place(x=200, y=270)
+Label_6.place(x=25, y=320)
+S6_entry.place(x=200, y=320)
+Label_7.place(x=25, y=370)
+S7_entry.place(x=200, y=370)
+Label_8.place(x=450, y=370)
+S8_entry.place(x=625, y=370)
+Label_9.place(x=25, y=420)
+S9_entry.place(x=200, y=420)
+Label_10.place(x=450, y=420)
+S10_entry.place(x=625, y=420)
+Label_11.place(x=25, y=470)
+S11_entry.place(x=200, y=470)
+
 
 def myClick():
-    Hello = "Hello " + meentry.get()
-    myLabel = tk.Label(root, text=Hello)
-    myLabel.pack()
 
-myButton = tk.Button(root, text="Enter your name", command=myClick)
-myButton.pack()
+    def val_entry(inp):
+        try:
+            float(inp)
+        except:
+            return False
+        return True
 
+    Datacheck = val_entry(S1_Freq.get()) and val_entry(S2_Freq.get()) and val_entry(Swing_Time.get())
+    Datacheck = Datacheck and val_entry(Nom_Voltage.get()) and val_entry(Fault_Voltage.get())
+    Datacheck = Datacheck and val_entry(Imp_Start.get()) and val_entry(Imp_Finish.get())
+    Datacheck = Datacheck and val_entry(S1_Volt_Phase_Angle.get()) and val_entry(S1_Current_Phase_Angle.get())
+    Datacheck = Datacheck and val_entry(S2_Volt_Phase_Angle.get()) and val_entry(S2_Current_Phase_Angle.get())
+
+    if Datacheck == False:
+        messagebox.showwarning("Number Validation", "Enter number and can not be blank")
+
+
+myButton = tk.Button(root, text="Validate Entry Information", command=myClick)
+myButton.place(x=425, y=20)
 
 root.mainloop()
-##################GUI######################
-#Im back#
 
-Name_version = "PSB Shishe V1.00"
+##################GUI######################
+
+Name_version = Version.get()#"PSB Shishe V1.00"
 
 Header = Name_version + "," + "1997"
 Output_Types = "6,6A,0D"
 
 # Input information
-Source_1_Freq = 50
-Source_2_Freq = 49.5
-V_Nom = 57.74
-V_Fault = 30
-Z_Finish = 20
-Z_Start = 55
-Source_1_Voltage_Phi = 0
-Source_2_Voltage_Phi = 0
-Source_1_Current_Phi = 0
-Source_2_Current_Phi = 180
-T_swing = 2
+Source_1_Freq = float(S1_Freq.get())
+Source_2_Freq = float(S2_Freq.get())
+V_Nom = float(Nom_Voltage.get())
+V_Fault = float(Fault_Voltage.get())
+Z_Finish = float(Imp_Finish.get())
+Z_Start = float(Imp_Start.get())
+Source_1_Voltage_Phi = float(S1_Volt_Phase_Angle.get())
+Source_2_Voltage_Phi = float(S2_Volt_Phase_Angle.get())
+Source_1_Current_Phi = float(S1_Current_Phase_Angle.get())
+Source_2_Current_Phi = float(S2_Current_Phase_Angle.get())
+T_swing = float(Swing_Time.get())
 
 # Instrument Transformers
 VT_Primary = 220
