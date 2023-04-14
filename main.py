@@ -16,7 +16,7 @@ from tkinter import *
 root = tk.Tk()
 root.geometry("1150x700+20+20")
 root.title("Power Swing CFG Generator")
-#root.iconbitmap("C:\Test_icon\wave.png")
+root.iconbitmap("C:\Test_icon\wave.ico")
 
 Version = tk.StringVar()
 Filepath_Input = tk.StringVar()
