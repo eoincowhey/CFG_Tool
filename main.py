@@ -6,9 +6,9 @@ import pandas as pd
 import numpy as np
 import math
 import tkinter as tk
-from tkinter import messagebox, StringVar
+from tkinter import messagebox
 from tkinter import ttk
-from tkinter import *
+from tkinter import filedialog
 
 
 #################   GUI   #######################
@@ -238,6 +238,50 @@ Validate_Button.grid(row=0, column=0)
 #CTVT_Data_Btn = tk.Button(frame_controls, text="Enter CT and VT Data", command=CTVT_Data, padx=10, pady=10)
 #CTVT_Data_Btn.grid(row=1, column=0)
 
+def donothing():
+   print("a")
+
+def about():
+   messagebox.showinfo(title="Power Swing CFG Developer", message="Program Version 2.01" + '\n' +
+                                                                  '\n' + "Copyright Eoin Cowhey 2023")
+
+def help():
+   messagebox.showinfo(title="Power Swing CFG Developer", message="Kiss me hoop")
+
+#def file_save():
+#    f = tkfilebrowser.asksaveasfile(mode='w', defaultextension=".txt")
+#    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+#        return
+#    text2save = str(text.get(1.0, END)) # starts from `1.0`, not `0.0`
+#    f.write(text2save)
+#    f.close() # `()` was missing.
+
+
+menubar=tk.Menu(root)
+#text=tk.Text(root)
+#text.pack()
+filemenu=tk.Menu(menubar,tearoff=0)
+#filemenu.add_command(label="New", command=donothing)
+#filemenu.add_command(label="Open", command=donothing)
+#filemenu.add_command(label="Save", command=file_save)
+#filemenu.add_command(label="Save as...", command=donothing)
+#filemenu.add_command(label="Close", command=donothing)
+#filemenu.add_separator()
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+
+#editmenu=tk.Menu(menubar,tearoff=0)
+#editmenu.add_command(label="Undo", command=donothing)
+#editmenu.add_command(label="Copy", command=donothing)
+#editmenu.add_command(label="Paste", command=donothing)
+#menubar.add_cascade(label="Edit", menu=editmenu)
+
+helpmenu=tk.Menu(menubar,tearoff=0)
+helpmenu.add_command(label="Help",command=help)
+helpmenu.add_command(label="About",command=about)
+menubar.add_cascade(label="Help",menu=helpmenu)
+
+root.config(menu=menubar)
 
 root.mainloop()
 
