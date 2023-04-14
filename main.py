@@ -7,6 +7,7 @@ import numpy as np
 import math
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 
 
 #################   GUI   #######################
@@ -30,6 +31,11 @@ S2_Volt_Phase_Angle = tk.StringVar()
 S1_Current_Phase_Angle = tk.StringVar()
 S2_Current_Phase_Angle = tk.StringVar()
 Swing_Time = tk.StringVar()
+CT_Orien = tk.StringVar()
+CT_Sec_Val = tk.StringVar()
+CT_Prim_Val = tk.StringVar()
+VT_Sec_Val = tk.StringVar()
+VT_Prim_Val = tk.StringVar()
 
 #Default Values
 Version.set("PSB Version 5.0")
@@ -46,6 +52,11 @@ S2_Volt_Phase_Angle.set("0")
 S1_Current_Phase_Angle.set("0")
 S2_Current_Phase_Angle.set("180")
 Swing_Time.set("2")
+CT_Orien.set("Busbar")
+CT_Sec_Val.set("1 A")
+CT_Prim_Val.set("2500")
+VT_Sec_Val.set("100")
+VT_Prim_Val.set("220")
 
 # Widgets
 frame_gen = tk.LabelFrame(root, text="General Data", padx=20, pady=20)
@@ -97,7 +108,39 @@ Label_11 = tk.Label(frame_test, font=('Arial',10), text='Swing Time:', padx=10, 
 S11_entry = tk.Entry(frame_test, font=('Arial',10), textvariable=Swing_Time, justify="center")
 Units_11 = tk.Label(frame_test, font=('Arial',10), text='sec')
 
-#Positioning
+frame_instruments = tk.LabelFrame(root, text="Instrument Transformers", padx=20, pady=20)
+Label_CT_Orien = tk.Label(frame_instruments, font=('Arial',10), text='CT Star Point Orientation:', padx=10, pady=10)
+CT_Orien_List = ttk.Combobox(frame_instruments, values=['Busbar', 'Line'], textvariable=CT_Orien)
+Label_CT_Prim = tk.Label(frame_instruments, font=('Arial',10), text='CT Primary:', padx=10, pady=10)
+CT_Prim_entry = tk.Entry(frame_instruments, font=('Arial',10), textvariable=CT_Prim_Val, justify="center")
+Units_CT = tk.Label(frame_instruments, font=('Arial',10), text='A')
+Label_CT_Sec = tk.Label(frame_instruments, font=('Arial',10), text='CT Secondary Rating:', padx=10, pady=10)
+CT_Sec_List = ttk.Combobox(frame_instruments, values=['1 A', '5 A'], textvariable=CT_Sec_Val)
+Label_VT_Prim = tk.Label(frame_instruments, font=('Arial',10), text='VT Primary:', padx=10, pady=10)
+VT_Prim_entry = tk.Entry(frame_instruments, font=('Arial',10), textvariable=VT_Prim_Val, justify="center")
+Units_VT_Prim = tk.Label(frame_instruments, font=('Arial',10), text='kV')
+Label_VT_Sec = tk.Label(frame_instruments, font=('Arial',10), text='VT Secondary Rating:', padx=10, pady=10)
+VT_Sec_entry = tk.Entry(frame_instruments, font=('Arial',10), textvariable=VT_Sec_Val, justify="center")
+Units_VT_Sec = tk.Label(frame_instruments, font=('Arial',10), text='V')
+
+# Positioning
+
+frame_instruments.place(x=450, y=330)
+Label_VT_Prim.grid(row=0, column=0, sticky="w")
+VT_Prim_entry.grid(row=0, column=1)
+Units_VT_Prim.grid(row=0, column=2, sticky="w")
+Label_VT_Sec.grid(row=1, column=0, sticky="w")
+VT_Sec_entry.grid(row=1, column=1)
+Units_VT_Sec.grid(row=1, column=2, sticky="w")
+Label_CT_Prim.grid(row=2, column=0, sticky="w")
+CT_Prim_entry.grid(row=2, column=1)
+Units_CT.grid(row=2, column=2, sticky="w")
+Label_CT_Sec.grid(row=3, column=0, sticky="w")
+CT_Sec_List.grid(row=3, column=1)
+Label_CT_Orien.grid(row=4, column=0, sticky="w")
+CT_Orien_List.grid(row=4, column=1)
+
+
 
 frame_gen.place(x=10, y=10)
 #frame_gen.grid(row=0, column=0)
@@ -175,7 +218,7 @@ def myClick():
 
 
 Validate_Button = tk.Button(root, text="Create CFG File", command=myClick)
-Validate_Button.place(x=650, y=380)
+Validate_Button.place(x=50, y=597)
 
 
 root.mainloop()
@@ -183,6 +226,8 @@ root.mainloop()
 ##################  Main Program  ######################
 
 Name_version = "PSB Shishe V1.00"
+
+print(CT_Orien.get())
 
 Header = Name_version + "," + "1997"
 Output_Types = "6,6A,0D"
@@ -205,7 +250,7 @@ VT_Primary = 220
 VT_Secondary = 100
 CT_Primary = 2500
 CT_Secondary = 1
-CT_Star_Point = "Busbar"
+CT_Star_Point = CT_Orien.get()
 
 VTP = format(VT_Primary * 1000, '.2E')
 VTS = format(VT_Secondary, '.2E')
