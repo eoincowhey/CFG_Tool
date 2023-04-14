@@ -7,13 +7,18 @@ import numpy as np
 import math
 import tkinter as tk
 from tkinter import messagebox
-#################GUI#######################
+
+
+#################   GUI   #######################
 
 root = tk.Tk()
 root.geometry("900x600")
 root.title("Power Swing Blocking 2.0")
+#root.iconbitmap("C:\Test_icon\wave.png")
 
 Version = tk.StringVar()
+Filepath_Input = tk.StringVar()
+Filename_Input = tk.StringVar()
 S1_Freq = tk.StringVar()
 S2_Freq = tk.StringVar()
 Nom_Voltage = tk.StringVar()
@@ -27,7 +32,9 @@ S2_Current_Phase_Angle = tk.StringVar()
 Swing_Time = tk.StringVar()
 
 #Default Values
-Version.set("PSB Shishe V1.00")
+Version.set("PSB Version 5.0")
+Filepath_Input.set("C:/Users/eoinc/OneDrive/Desktop")
+Filename_Input.set("Eoin_C_CFG")
 S1_Freq.set("50")
 S2_Freq.set("49.5")
 Nom_Voltage.set("57.74")
@@ -40,80 +47,110 @@ S1_Current_Phase_Angle.set("0")
 S2_Current_Phase_Angle.set("180")
 Swing_Time.set("2")
 
-Label_Ver = tk.Label(root, font=('Arial',10), text='Program Version:')
-Ver_entry = tk.Entry(root, font=('Arial',10), textvariable=Version, justify="left")
-Label_1 = tk.Label(root, font=('Arial',10), text='Source 1 Frequency:')
-S1_entry = tk.Entry(root, font=('Arial',10), textvariable=S1_Freq, justify="center")
-Units_1 = tk.Label(root, font=('Arial',10), text='Hz')
-Label_2 = tk.Label(root, font=('Arial',10), text='Source 2 Frequency:')
-S2_entry = tk.Entry(root, font=('Arial',10), textvariable=S2_Freq, justify="center")
-Units_2 = tk.Label(root, font=('Arial',10), text='Hz', justify="center")
-Label_3 = tk.Label(root, font=('Arial',10), text='Healthy Voltage:')
-S3_entry = tk.Entry(root, font=('Arial',10), textvariable=Nom_Voltage, justify="center")
-Units_3 = tk.Label(root, font=('Arial',10), text='V')
-Label_4 = tk.Label(root, font=('Arial',10), text='Fault Voltage:')
-S4_entry = tk.Entry(root, font=('Arial',10), textvariable=Fault_Voltage, justify="center")
-Units_4 = tk.Label(root, font=('Arial',10), text='V')
-Label_5 = tk.Label(root, font=('Arial',10), text='Start Impedance:')
-S5_entry = tk.Entry(root, font=('Arial',10), textvariable=Imp_Start, justify="center")
-Units_5 = tk.Label(root, font=('Arial',10), text='Ohms')
-Label_6 = tk.Label(root, font=('Arial',10), text='Finish Impedance:')
-S6_entry = tk.Entry(root, font=('Arial',10), textvariable=Imp_Finish, justify="center")
-Units_6 = tk.Label(root, font=('Arial',10), text='Ohms')
-Label_7 = tk.Label(root, font=('Arial',10), text='Source 1 Voltage Phase Angle:')
-S7_entry = tk.Entry(root, font=('Arial',10), textvariable=S1_Volt_Phase_Angle, justify="center")
-Units_7 = tk.Label(root, font=('Arial',10), text='deg')
-Label_8 = tk.Label(root, font=('Arial',10), text='Source 2 Voltage Phase Angle:')
-S8_entry = tk.Entry(root, font=('Arial',10), textvariable=S2_Volt_Phase_Angle, justify="center")
-Units_8 = tk.Label(root, font=('Arial',10), text='deg')
-Label_9 = tk.Label(root, font=('Arial',10), text='Source 1 Current Phase Angle:')
-S9_entry = tk.Entry(root, font=('Arial',10), textvariable=S1_Current_Phase_Angle, justify="center")
-Units_9 = tk.Label(root, font=('Arial',10), text='deg')
-Label_10 = tk.Label(root, font=('Arial',10), text='Source 2 Current Phase Angle:')
-S10_entry = tk.Entry(root, font=('Arial',10), textvariable=S2_Current_Phase_Angle, justify="center")
-Units_10 = tk.Label(root, font=('Arial',10), text='deg')
-Label_11 = tk.Label(root, font=('Arial',10), text='Swing Time:')
-S11_entry = tk.Entry(root, font=('Arial',10), textvariable=Swing_Time, justify="center")
-Units_11 = tk.Label(root, font=('Arial',10), text='sec')
+# Widgets
+frame_gen = tk.LabelFrame(root, text="General Data", padx=20, pady=20)
+Label_Filepath = tk.Label(frame_gen, font=('Arial',10), text='File Path:', padx=10, pady=10)
+Blank_Filepath = tk.Label(frame_gen, font=('Arial',10), text='     ')
+Filepath_entry = tk.Entry(frame_gen, font=('Arial',10), textvariable=Filepath_Input, justify="left")
+Blank_gen = tk.Label(frame_gen, font=('Arial',10), text='               ', padx=10, pady=10)
+Label_Filename = tk.Label(frame_gen, font=('Arial',10), text='File Name:', padx=10, pady=10)
+Blank_Filename = tk.Label(frame_gen, font=('Arial',10), text='     ')
+Filename_entry = tk.Entry(frame_gen, font=('Arial',10), textvariable=Filename_Input, justify="left")
 
+frame_S1 = tk.LabelFrame(root, text="Source 1 Data", padx=20, pady=20)
+Label_1 = tk.Label(frame_S1, font=('Arial',10), text='Source 1 Frequency:', padx=10, pady=10)
+Blank_1 = tk.Label(frame_S1, font=('Arial',10), text='     ')
+S1_entry = tk.Entry(frame_S1, font=('Arial',10), textvariable=S1_Freq, justify="center")
+Units_1 = tk.Label(frame_S1, font=('Arial',10), text='Hz')
+Label_7 = tk.Label(frame_S1, font=('Arial',10), text='Source 1 Voltage Phase Angle:', padx=10, pady=10)
+S7_entry = tk.Entry(frame_S1, font=('Arial',10), textvariable=S1_Volt_Phase_Angle, justify="center")
+Units_7 = tk.Label(frame_S1, font=('Arial',10), text='deg')
+Label_9 = tk.Label(frame_S1, font=('Arial',10), text='Source 1 Current Phase Angle:', padx=10, pady=10)
+S9_entry = tk.Entry(frame_S1, font=('Arial',10), textvariable=S1_Current_Phase_Angle, justify="center")
+Units_9 = tk.Label(frame_S1, font=('Arial',10), text='deg')
 
+frame_S2 = tk.LabelFrame(root, text="Source 2 Data", padx=20, pady=20)
+Label_2 = tk.Label(frame_S2, font=('Arial',10), text='Source 2 Frequency:', padx=10, pady=10)
+S2_entry = tk.Entry(frame_S2, font=('Arial',10), textvariable=S2_Freq, justify="center")
+Units_2 = tk.Label(frame_S2, font=('Arial',10), text='Hz', justify="center")
+Label_8 = tk.Label(frame_S2, font=('Arial',10), text='Source 2 Voltage Phase Angle:', padx=10, pady=10)
+S8_entry = tk.Entry(frame_S2, font=('Arial',10), textvariable=S2_Volt_Phase_Angle, justify="center")
+Units_8 = tk.Label(frame_S2, font=('Arial',10), text='deg')
+Label_10 = tk.Label(frame_S2, font=('Arial',10), text='Source 2 Current Phase Angle:', padx=10, pady=10)
+S10_entry = tk.Entry(frame_S2, font=('Arial',10), textvariable=S2_Current_Phase_Angle, justify="center")
+Units_10 = tk.Label(frame_S2, font=('Arial',10), text='deg')
+
+frame_test = tk.LabelFrame(root, text="Test Data", padx=20, pady=20)
+Label_3 = tk.Label(frame_test, font=('Arial',10), text='Healthy Voltage:', padx=10, pady=10)
+S3_entry = tk.Entry(frame_test, font=('Arial',10), textvariable=Nom_Voltage, justify="center")
+Units_3 = tk.Label(frame_test, font=('Arial',10), text='V')
+Label_4 = tk.Label(frame_test, font=('Arial',10), text='Fault Voltage:', padx=10, pady=10)
+S4_entry = tk.Entry(frame_test, font=('Arial',10), textvariable=Fault_Voltage, justify="center")
+Units_4 = tk.Label(frame_test, font=('Arial',10), text='V')
+Label_5 = tk.Label(frame_test, font=('Arial',10), text='Start Impedance:', padx=10, pady=10)
+S5_entry = tk.Entry(frame_test, font=('Arial',10), textvariable=Imp_Start, justify="center")
+Units_5 = tk.Label(frame_test, font=('Arial',10), text='Ohms')
+Label_6 = tk.Label(frame_test, font=('Arial',10), text='Finish Impedance:', padx=10, pady=10)
+S6_entry = tk.Entry(frame_test, font=('Arial',10), textvariable=Imp_Finish, justify="center")
+Units_6 = tk.Label(frame_test, font=('Arial',10), text='Ohms')
+Label_11 = tk.Label(frame_test, font=('Arial',10), text='Swing Time:', padx=10, pady=10)
+S11_entry = tk.Entry(frame_test, font=('Arial',10), textvariable=Swing_Time, justify="center")
+Units_11 = tk.Label(frame_test, font=('Arial',10), text='sec')
 
 #Positioning
-Label_Ver.place(x=25, y=20)
-Ver_entry.place(x=225, y=20)
-Label_1.place(x=25, y=120)
-S1_entry.place(x=225, y=120)
-Units_1.place(x=375, y=120)
-Label_2.place(x=450, y=120)
-S2_entry.place(x=650, y=120)
-Units_2.place(x=800, y=120)
-Label_7.place(x=25, y=170)
-S7_entry.place(x=225, y=170)
-Units_7.place(x=375, y=170)
-Label_8.place(x=450, y=170)
-S8_entry.place(x=650, y=170)
-Units_8.place(x=800, y=170)
-Label_9.place(x=25, y=220)
-S9_entry.place(x=225, y=220)
-Units_9.place(x=375, y=220)
-Label_10.place(x=450, y=220)
-S10_entry.place(x=650, y=220)
-Units_10.place(x=800, y=220)
-Label_3.place(x=25, y=270)
-S3_entry.place(x=200, y=270)
-Units_3.place(x=350, y=270)
-Label_4.place(x=25, y=320)
-S4_entry.place(x=200, y=320)
-Units_4.place(x=350, y=320)
-Label_5.place(x=25, y=370)
-S5_entry.place(x=200, y=370)
-Units_5.place(x=350, y=370)
-Label_6.place(x=25, y=420)
-S6_entry.place(x=200, y=420)
-Units_6.place(x=350, y=420)
-Label_11.place(x=25, y=520)
-S11_entry.place(x=200, y=520)
-Units_11.place(x=350, y=520)
+
+frame_gen.place(x=10, y=10)
+#frame_gen.grid(row=0, column=0)
+Label_Filepath.grid(row=0, column=0)
+Blank_Filepath.grid(row=0, column=1)
+Filepath_entry.grid(row=0, column=2)
+Blank_gen.grid(row=0, column=3)
+Label_Filename.grid(row=0, column=4)
+Blank_Filename.grid(row=0, column=5)
+Filename_entry.grid(row=0, column=6)
+
+frame_S1.place(x=10, y=130)
+#frame_S1.grid(row=1, column=0)
+Label_1.grid(row=0, column=0, sticky="w")
+S1_entry.grid(row=0, column=1)
+Units_1.grid(row=0, column=2, sticky="w")
+Label_7.grid(row=1, column=0, sticky="w")
+S7_entry.grid(row=1, column=1)
+Units_7.grid(row=1, column=2, sticky="w")
+Label_9.grid(row=2, column=0, sticky="w")
+S9_entry.grid(row=2, column=1)
+Units_9.grid(row=2, column=2, sticky="w")
+
+frame_S2.place(x=450, y=130)
+#frame_S2.grid(row=1, column=1)
+Label_2.grid(row=0, column=0, sticky="w")
+S2_entry.grid(row=0, column=1)
+Units_2.grid(row=0, column=2, sticky="w")
+Label_8.grid(row=1, column=0, sticky="w")
+S8_entry.grid(row=1, column=1)
+Units_8.grid(row=1, column=2, sticky="w")
+Label_10.grid(row=2, column=0, sticky="w")
+S10_entry.grid(row=2, column=1)
+Units_10.grid(row=2, column=2, sticky="w")
+
+frame_test.place(x=10, y=330)
+#frame_test.grid(row=2, column=0)
+Label_3.grid(row=0, column=0, sticky="w")
+S3_entry.grid(row=0, column=1)
+Units_3.grid(row=0, column=2, sticky="w")
+Label_4.grid(row=1, column=0, sticky="w")
+S4_entry.grid(row=1, column=1)
+Units_4.grid(row=1, column=2, sticky="w")
+Label_5.grid(row=2, column=0, sticky="w")
+S5_entry.grid(row=2, column=1)
+Units_5.grid(row=2, column=2, sticky="w")
+Label_6.grid(row=3, column=0, sticky="w")
+S6_entry.grid(row=3, column=1)
+Units_6.grid(row=3, column=2, sticky="w")
+Label_11.grid(row=4, column=0, sticky="w")
+S11_entry.grid(row=4, column=1)
+Units_11.grid(row=4, column=2, sticky="w")
+
 
 
 def myClick():
@@ -133,16 +170,19 @@ def myClick():
 
     if Datacheck == False:
         messagebox.showwarning("Number Validation", "Enter number and can not be blank")
+    else:
+        root.destroy()
 
 
-myButton = tk.Button(root, text="Validate Entry Information", command=myClick)
-myButton.place(x=425, y=20)
+Validate_Button = tk.Button(root, text="Create CFG File", command=myClick)
+Validate_Button.place(x=650, y=380)
+
 
 root.mainloop()
 
-##################GUI######################
+##################  Main Program  ######################
 
-Name_version = Version.get()#"PSB Shishe V1.00"
+Name_version = "PSB Shishe V1.00"
 
 Header = Name_version + "," + "1997"
 Output_Types = "6,6A,0D"
@@ -338,9 +378,8 @@ Final = "1.0"
 
 # Output Files
 
-CFG_filepath = "C:/Users/eoinc/OneDrive/Desktop/EC_Comtrade.cfg"
-
-Dat_filepath = "C:/Users/eoinc/OneDrive/Desktop/EC_Comtrade.dat"
+CFG_filepath = Filepath_Input.get() + "/" + Filename_Input.get() + ".cfg"
+Dat_filepath = Filepath_Input.get() + "/" + Filename_Input.get() + ".dat"
 
 
 # Export Files
