@@ -1,4 +1,4 @@
-# Power Swing Blocking Test Tool V1.00
+# Power Swing Blocking Test Tool V2.00
 # Developed by Eoin Cowhey
 # Copyright Eoin Cowhey 2022/2023.
 
