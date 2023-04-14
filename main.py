@@ -6,8 +6,9 @@ import pandas as pd
 import numpy as np
 import math
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, StringVar
 from tkinter import ttk
+from tkinter import *
 
 
 #################   GUI   #######################
@@ -109,19 +110,24 @@ S11_entry = tk.Entry(frame_test, font=('Arial',10), textvariable=Swing_Time, jus
 Units_11 = tk.Label(frame_test, font=('Arial',10), text='   sec')
 
 frame_instruments = tk.LabelFrame(root, text="Instrument Transformers", padx=20, pady=20)
-Label_CT_Orien = tk.Label(frame_instruments, font=('Arial',10), text='CT Star Point Orientation:', padx=10, pady=10)
-CT_Orien_List = ttk.Combobox(frame_instruments, values=['Busbar', 'Line'], textvariable=CT_Orien, justify="center", width=15)
-Label_CT_Prim = tk.Label(frame_instruments, font=('Arial',10), text='CT Primary:', padx=10, pady=10)
-CT_Prim_entry = tk.Entry(frame_instruments, font=('Arial',10), textvariable=CT_Prim_Val, justify="center", width=15)
-Units_CT = tk.Label(frame_instruments, font=('Arial',10), text='   A')
-Label_CT_Sec = tk.Label(frame_instruments, font=('Arial',10), text='CT Secondary Rating:', padx=10, pady=10)
-CT_Sec_List = ttk.Combobox(frame_instruments, values=['1 A', '5 A'], textvariable=CT_Sec_Val, justify="center", width=15)
-Label_VT_Prim = tk.Label(frame_instruments, font=('Arial',10), text='VT Primary:', padx=10, pady=10)
-VT_Prim_entry = tk.Entry(frame_instruments, font=('Arial',10), textvariable=VT_Prim_Val, justify="center", width=15)
-Units_VT_Prim = tk.Label(frame_instruments, font=('Arial',10), text='   kV')
-Label_VT_Sec = tk.Label(frame_instruments, font=('Arial',10), text='VT Secondary Rating:', padx=10, pady=10)
-VT_Sec_entry = tk.Entry(frame_instruments, font=('Arial',10), textvariable=VT_Sec_Val, justify="center", width=15)
-Units_VT_Sec = tk.Label(frame_instruments, font=('Arial',10), text='   V')
+Label_CT_Orien = tk.Label(frame_instruments, font=('Arial', 10), text='CT Star Point Orientation:', padx=10,
+                              pady=10)
+CT_Orien_List = ttk.Combobox(frame_instruments, values=['Busbar', 'Line'], textvariable=CT_Orien, justify="center",
+                                 width=15)
+Label_CT_Prim = tk.Label(frame_instruments, font=('Arial', 10), text='CT Primary:', padx=10, pady=10)
+CT_Prim_entry = tk.Entry(frame_instruments, font=('Arial', 10), textvariable=CT_Prim_Val, justify="center",
+                             width=15)
+Units_CT = tk.Label(frame_instruments, font=('Arial', 10), text='   A')
+Label_CT_Sec = tk.Label(frame_instruments, font=('Arial', 10), text='CT Secondary Rating:', padx=10, pady=10)
+CT_Sec_List = ttk.Combobox(frame_instruments, values=['1 A', '5 A'], textvariable=CT_Sec_Val, justify="center",
+                               width=15)
+Label_VT_Prim = tk.Label(frame_instruments, font=('Arial', 10), text='VT Primary:', padx=10, pady=10)
+VT_Prim_entry = tk.Entry(frame_instruments, font=('Arial', 10), textvariable=VT_Prim_Val, justify="center",
+                             width=15)
+Units_VT_Prim = tk.Label(frame_instruments, font=('Arial', 10), text='   kV')
+Label_VT_Sec = tk.Label(frame_instruments, font=('Arial', 10), text='VT Secondary Rating:', padx=10, pady=10)
+VT_Sec_entry = tk.Entry(frame_instruments, font=('Arial', 10), textvariable=VT_Sec_Val, justify="center", width=15)
+Units_VT_Sec = tk.Label(frame_instruments, font=('Arial', 10), text='   V')
 
 # Positioning
 
@@ -193,6 +199,7 @@ CT_Sec_List.grid(row=3, column=1)
 Label_CT_Orien.grid(row=4, column=0, sticky="w")
 CT_Orien_List.grid(row=4, column=1)
 
+
 def myClick():
 
     def val_entry(inp):
@@ -218,6 +225,18 @@ Validate_Button = tk.Button(frame_controls, text="Create Power Swing CFG", comma
 #Validate_Button.place(x=50, y=597)
 frame_controls.place(x=900, y=10)
 Validate_Button.grid(row=0, column=0)
+
+#def CTVT_Data():
+ #   global UnitisVT, VT_Sec_entry1, UnitisCT
+  #  top = Toplevel()
+   # top.title('Instrument Transformer Data')
+    #UnitisVT = tk.Label(top, font=('Arial', 10), text='Kiss me hoop').pack()
+    #UnitisCT = tk.Label(top, font=('Arial', 10), text='Kiss me hoop x2').pack()
+    #VT_Sec_entry1 = tk.Entry(top, font=('Arial', 10), text="stupid", justify="center", width=15).pack
+
+
+#CTVT_Data_Btn = tk.Button(frame_controls, text="Enter CT and VT Data", command=CTVT_Data, padx=10, pady=10)
+#CTVT_Data_Btn.grid(row=1, column=0)
 
 
 root.mainloop()
