@@ -13,7 +13,7 @@ from tkinter import messagebox
 
 root = tk.Tk()
 root.geometry("900x600")
-root.title("Power Swing Blocking 2.0")
+root.title("Power Swing CFG Generator")
 #root.iconbitmap("C:\Test_icon\wave.png")
 
 Version = tk.StringVar()
