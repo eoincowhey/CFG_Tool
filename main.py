@@ -12,7 +12,7 @@ from tkinter import messagebox
 #################   GUI   #######################
 
 root = tk.Tk()
-root.geometry("900x600")
+root.geometry("900x650")
 root.title("Power Swing CFG Generator")
 #root.iconbitmap("C:\Test_icon\wave.png")
 
@@ -51,11 +51,11 @@ Swing_Time.set("2")
 frame_gen = tk.LabelFrame(root, text="General Data", padx=20, pady=20)
 Label_Filepath = tk.Label(frame_gen, font=('Arial',10), text='File Path:', padx=10, pady=10)
 Blank_Filepath = tk.Label(frame_gen, font=('Arial',10), text='     ')
-Filepath_entry = tk.Entry(frame_gen, font=('Arial',10), textvariable=Filepath_Input, justify="left")
+Filepath_entry = tk.Entry(frame_gen, font=('Arial',10), textvariable=Filepath_Input, justify="left", width=50)
 Blank_gen = tk.Label(frame_gen, font=('Arial',10), text='               ', padx=10, pady=10)
 Label_Filename = tk.Label(frame_gen, font=('Arial',10), text='File Name:', padx=10, pady=10)
 Blank_Filename = tk.Label(frame_gen, font=('Arial',10), text='     ')
-Filename_entry = tk.Entry(frame_gen, font=('Arial',10), textvariable=Filename_Input, justify="left")
+Filename_entry = tk.Entry(frame_gen, font=('Arial',10), textvariable=Filename_Input, justify="left", width=22)
 
 frame_S1 = tk.LabelFrame(root, text="Source 1 Data", padx=20, pady=20)
 Label_1 = tk.Label(frame_S1, font=('Arial',10), text='Source 1 Frequency:', padx=10, pady=10)
