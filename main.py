@@ -13,7 +13,7 @@ from tkinter import ttk
 #################   GUI   #######################
 
 root = tk.Tk()
-root.geometry("900x650")
+root.geometry("1150x700+20+20")
 root.title("Power Swing CFG Generator")
 #root.iconbitmap("C:\Test_icon\wave.png")
 
@@ -125,22 +125,6 @@ Units_VT_Sec = tk.Label(frame_instruments, font=('Arial',10), text='   V')
 
 # Positioning
 
-frame_instruments.place(x=450, y=330)
-Label_VT_Prim.grid(row=0, column=0, sticky="w")
-VT_Prim_entry.grid(row=0, column=1)
-Units_VT_Prim.grid(row=0, column=2, sticky="w")
-Label_VT_Sec.grid(row=1, column=0, sticky="w")
-VT_Sec_entry.grid(row=1, column=1)
-Units_VT_Sec.grid(row=1, column=2, sticky="w")
-Label_CT_Prim.grid(row=2, column=0, sticky="w")
-CT_Prim_entry.grid(row=2, column=1)
-Units_CT.grid(row=2, column=2, sticky="w")
-Label_CT_Sec.grid(row=3, column=0, sticky="w")
-CT_Sec_List.grid(row=3, column=1)
-Label_CT_Orien.grid(row=4, column=0, sticky="w")
-CT_Orien_List.grid(row=4, column=1)
-
-
 frame_gen.place(x=10, y=10)
 #frame_gen.grid(row=0, column=0)
 Label_Filepath.grid(row=0, column=0)
@@ -193,7 +177,21 @@ Label_11.grid(row=4, column=0, sticky="w")
 S11_entry.grid(row=4, column=1)
 Units_11.grid(row=4, column=2, sticky="w")
 
-
+# Instrument Transformers
+frame_instruments.place(x=450, y=330)
+Label_VT_Prim.grid(row=0, column=0, sticky="w")
+VT_Prim_entry.grid(row=0, column=1)
+Units_VT_Prim.grid(row=0, column=2, sticky="w")
+Label_VT_Sec.grid(row=1, column=0, sticky="w")
+VT_Sec_entry.grid(row=1, column=1)
+Units_VT_Sec.grid(row=1, column=2, sticky="w")
+Label_CT_Prim.grid(row=2, column=0, sticky="w")
+CT_Prim_entry.grid(row=2, column=1)
+Units_CT.grid(row=2, column=2, sticky="w")
+Label_CT_Sec.grid(row=3, column=0, sticky="w")
+CT_Sec_List.grid(row=3, column=1)
+Label_CT_Orien.grid(row=4, column=0, sticky="w")
+CT_Orien_List.grid(row=4, column=1)
 
 def myClick():
 
@@ -215,9 +213,11 @@ def myClick():
     else:
         root.destroy()
 
-
-Validate_Button = tk.Button(root, text="Create CFG File", command=myClick)
-Validate_Button.place(x=50, y=597)
+frame_controls = tk.LabelFrame(root, text="Controls", padx=20, pady=20)
+Validate_Button = tk.Button(frame_controls, text="Create Power Swing CFG", command=myClick, padx=10, pady=10)
+#Validate_Button.place(x=50, y=597)
+frame_controls.place(x=900, y=10)
+Validate_Button.grid(row=0, column=0)
 
 
 root.mainloop()
@@ -244,11 +244,17 @@ Source_1_Current_Phi = float(S1_Current_Phase_Angle.get())
 Source_2_Current_Phi = float(S2_Current_Phase_Angle.get())
 T_swing = float(Swing_Time.get())
 
+
+if CT_Sec_Val.get() == '5 A':
+    CT_Sec_Rating = 5
+else:
+    CT_Sec_Rating = 1
+
 # Instrument Transformers
-VT_Primary = 220
-VT_Secondary = 100
-CT_Primary = 2500
-CT_Secondary = 1
+VT_Primary = float(VT_Prim_Val.get())
+VT_Secondary = float(VT_Sec_Val.get())
+CT_Primary = float(CT_Prim_Val.get())
+CT_Secondary = CT_Sec_Rating
 CT_Star_Point = CT_Orien.get()
 
 VTP = format(VT_Primary * 1000, '.2E')
