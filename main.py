@@ -5,6 +5,7 @@
 import pandas as pd
 import numpy as np
 import math
+import sys
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
@@ -218,13 +219,10 @@ def myClick():
     if Datacheck == False:
         messagebox.showwarning("Number Validation", "Enter number and can not be blank")
     else:
-        root.destroy()
+        messagebox.showinfo(title="Power Swing CFG Developer", message=".cfg and .dat file created")
+        #root.destroy()
 
-frame_controls = tk.LabelFrame(root, text="Controls", padx=20, pady=20)
-Validate_Button = tk.Button(frame_controls, text="Create Power Swing CFG", command=myClick, padx=10, pady=10)
-#Validate_Button.place(x=50, y=597)
-frame_controls.place(x=900, y=10)
-Validate_Button.grid(row=0, column=0)
+
 
 #def CTVT_Data():
  #   global UnitisVT, VT_Sec_entry1, UnitisCT
@@ -248,6 +246,10 @@ def about():
 def help():
    messagebox.showinfo(title="Power Swing CFG Developer", message="Kiss me hoop")
 
+def jack_it():
+   sys.exit()
+   root.quit
+
 #def file_save():
 #    f = tkfilebrowser.asksaveasfile(mode='w', defaultextension=".txt")
 #    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
@@ -255,6 +257,14 @@ def help():
 #    text2save = str(text.get(1.0, END)) # starts from `1.0`, not `0.0`
 #    f.write(text2save)
 #    f.close() # `()` was missing.
+
+frame_controls = tk.LabelFrame(root, text="Controls", padx=20, pady=20)
+Validate_Button = tk.Button(frame_controls, text="Create Power Swing CFG", command=myClick, padx=10, pady=10, width=20)
+Close_Button = tk.Button(frame_controls, text="Exit", command=jack_it, padx=10, pady=10, width=20)
+#Validate_Button.place(x=50, y=597)
+frame_controls.place(x=900, y=10)
+Validate_Button.grid(row=0, column=0, padx=10, pady=10)
+Close_Button.grid(row=1, column=0, padx=10, pady=10)
 
 
 menubar=tk.Menu(root)
@@ -266,8 +276,8 @@ filemenu=tk.Menu(menubar,tearoff=0)
 #filemenu.add_command(label="Save", command=file_save)
 #filemenu.add_command(label="Save as...", command=donothing)
 #filemenu.add_command(label="Close", command=donothing)
-#filemenu.add_separator()
-filemenu.add_command(label="Exit", command=root.quit)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=jack_it)
 menubar.add_cascade(label="File", menu=filemenu)
 
 #editmenu=tk.Menu(menubar,tearoff=0)
