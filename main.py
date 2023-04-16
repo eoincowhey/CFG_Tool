@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import math
 import sys
+import os
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
@@ -219,8 +220,9 @@ def myClick():
     if Datacheck == False:
         messagebox.showwarning("Number Validation", "Enter number and can not be blank")
     else:
+        #os.system('C:\Users\eoinc\PycharmProjects\TestCFG_V0_0\venv\CFG_Calc.py')
         messagebox.showinfo(title="Power Swing CFG Developer", message=".cfg and .dat file created")
-        #root.destroy()
+        root.destroy()
 
 
 
@@ -248,7 +250,10 @@ def help():
 
 def jack_it():
    sys.exit()
-   root.quit
+   #root.quit
+
+#def run_prog():
+#    os.system('CFG_Calc.py')
 
 #def file_save():
 #    f = tkfilebrowser.asksaveasfile(mode='w', defaultextension=".txt")
@@ -259,7 +264,7 @@ def jack_it():
 #    f.close() # `()` was missing.
 
 frame_controls = tk.LabelFrame(root, text="Controls", padx=20, pady=20)
-Validate_Button = tk.Button(frame_controls, text="Create Power Swing CFG", command=myClick, padx=10, pady=10, width=20)
+Validate_Button = tk.Button(frame_controls, text="Create CFG and Close", command=myClick, padx=10, pady=10, width=20)
 Close_Button = tk.Button(frame_controls, text="Exit", command=jack_it, padx=10, pady=10, width=20)
 #Validate_Button.place(x=50, y=597)
 frame_controls.place(x=900, y=10)
@@ -526,7 +531,4 @@ with open(Dat_filepath, "w", newline = '') as g:   # Opens file and casts as f
 
 print(Output_x)
 #print(Dat_File)
-
-
-
 
