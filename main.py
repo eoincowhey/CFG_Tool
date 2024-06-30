@@ -243,7 +243,7 @@ def donothing():
 
 def about():
    messagebox.showinfo(title="Power Swing CFG Developer", message="Program Version 2.01" + '\n' +
-                                                                  '\n' + "Copyright Eoin Cowhey 2023")
+                                                                  '\n' + "Copyright Eoin Cowhey 2024")
 
 def help():
    messagebox.showinfo(title="Power Swing CFG Developer", message="Kiss me hoop")
