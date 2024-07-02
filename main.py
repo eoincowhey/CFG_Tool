@@ -202,14 +202,14 @@ Label_CT_Orien.grid(row=4, column=0, sticky="w")
 CT_Orien_List.grid(row=4, column=1)
 
 #### wtf ######################################################################
-def create_window():
-    top_window = tk.Toplevel(root)
-    top_window.title("Top Window")
-    top_window.geometry("200x200")
+#def create_window():
+ #   top_window = tk.Toplevel(root)
+  #  top_window.title("Top Window")
+   # top_window.geometry("200x200")
 
-    tk.Button(top_window, text="Create CFG and Close", command=myClick).pack()
+   # tk.Button(top_window, text="Create CFG and Close", command=myClick).pack()
 
-tk.Button(root, text = "Create Window", command= create_window).pack()
+#tk.Button(root, text = "Create Window", command= create_window).pack()
 
 ##################################################################################
 
@@ -542,6 +542,8 @@ with open(Dat_filepath, "w", newline = '') as g:   # Opens file and casts as f
 
 
 print(Output_x)
+
+
 #print(Dat_File)
 
 #root.config(menu=menubar)
