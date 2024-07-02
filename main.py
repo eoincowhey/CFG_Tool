@@ -201,6 +201,17 @@ CT_Sec_List.grid(row=3, column=1)
 Label_CT_Orien.grid(row=4, column=0, sticky="w")
 CT_Orien_List.grid(row=4, column=1)
 
+#### wtf ######################################################################
+def create_window():
+    top_window = tk.Toplevel(root)
+    top_window.title("Top Window")
+    top_window.geometry("200x200")
+
+    tk.Button(top_window, text="Create CFG and Close", command=myClick).pack()
+
+tk.Button(root, text = "Create Window", command= create_window).pack()
+
+##################################################################################
 
 def myClick():
 
@@ -222,7 +233,8 @@ def myClick():
     else:
         #os.system('C:\Users\eoinc\PycharmProjects\TestCFG_V0_0\venv\CFG_Calc.py')
         messagebox.showinfo(title="Power Swing CFG Developer", message=".cfg and .dat file created")
-        root.destroy()
+        root.destroy()             #####  Very Important!!!!!  #####
+
 
 
 
@@ -357,7 +369,7 @@ else:
 
 
 # Fault record process data
-Recording_bits = 12
+Recording_bits = 16 #12
 Recording_decimal = (2**Recording_bits)-1
 Sample_rate = 1000  # e.g. 10 kHz
 No_of_samples = T_swing * Sample_rate
@@ -532,3 +544,6 @@ with open(Dat_filepath, "w", newline = '') as g:   # Opens file and casts as f
 print(Output_x)
 #print(Dat_File)
 
+#root.config(menu=menubar)
+
+#root.mainloop()
