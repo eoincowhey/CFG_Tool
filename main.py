@@ -522,8 +522,7 @@ def cnut():
 
 #---->
 frame_controls = tk.LabelFrame(root, text="Controls", padx=20, pady=20)
-Validate_Button = tk.Button(frame_controls, text="Create CFG and Close", command=myClick, padx=10, pady=10, width=20)
-Validate_Button = tk.Button(frame_controls, command=cnut)
+Validate_Button = tk.Button(frame_controls, text="Generate Comtrade File", command=lambda:[myClick(), cnut()],padx=10, pady=10, width=20)
 Close_Button = tk.Button(frame_controls, text="Exit", command=jack_it, padx=10, pady=10, width=20)
 #Validate_Button.place(x=50, y=597)
 frame_controls.place(x=900, y=10)
