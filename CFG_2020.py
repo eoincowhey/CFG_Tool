@@ -18,7 +18,7 @@ from tkinter import filedialog
 root = tk.Tk()
 root.geometry("1150x700+20+20")
 root.title("Power Swing CFG Generator")
-root.iconbitmap("C:\Test_icon\wave.ico")
+#root.iconbitmap("C:\Test_icon\wave.ico")
 
 Version = tk.StringVar()
 Filepath_Input = tk.StringVar()
@@ -242,8 +242,8 @@ def myClick():
  #   global UnitisVT, VT_Sec_entry1, UnitisCT
   #  top = Toplevel()
    # top.title('Instrument Transformer Data')
-    #UnitisVT = tk.Label(top, font=('Arial', 10), text='Kiss me hoop').pack()
-    #UnitisCT = tk.Label(top, font=('Arial', 10), text='Kiss me hoop x2').pack()
+    #UnitisVT = tk.Label(top, font=('Arial', 10), text='I don't know???').pack()
+    #UnitisCT = tk.Label(top, font=('Arial', 10), text='I don't know??').pack()
     #VT_Sec_entry1 = tk.Entry(top, font=('Arial', 10), text="stupid", justify="center", width=15).pack
 
 
@@ -255,10 +255,10 @@ def donothing():
 
 def about():
    messagebox.showinfo(title="Power Swing CFG Developer", message="Program Version 2.01" + '\n' +
-                                                                  '\n' + "Copyright Eoin Cowhey 2024")
+                                                                  '\n' + "Copyright Eoin Cowhey 2022")
 
 def help():
-   messagebox.showinfo(title="Power Swing CFG Developer", message="Kiss me hoop")
+   messagebox.showinfo(title="Power Swing CFG Developer", message="Give me money")
 
 def jack_it():
    sys.exit()
@@ -288,7 +288,7 @@ def cnut():
 
     Name_version = "PSB Shishe V1.00"
 
-    print(CT_Orien.get())
+    #print(CT_Orien.get())
 
     Header = Name_version + "," + "1997"
     Output_Types = "6,6A,0D"
@@ -513,7 +513,7 @@ def cnut():
         g.write(Dat_File)
 
 
-    print(Output_x)
+    #print(Output_x)
 
 
 #print(Dat_File)
