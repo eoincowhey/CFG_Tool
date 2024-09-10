@@ -18,6 +18,7 @@ from tkinter import filedialog
 root = tk.Tk()
 root.geometry("1150x700+20+20")
 root.title("Power Swing CFG Generator")
+
 #root.iconbitmap("C:\Test_icon\wave.ico")
 
 Version = tk.StringVar()
@@ -341,7 +342,7 @@ def cnut():
 
 
     # Fault record process data
-    Recording_bits = 16 #12
+    Recording_bits = 12 #12
     Recording_decimal = (2**Recording_bits)-1
     Sample_rate = 1000  # e.g. 10 kHz
     No_of_samples = T_swing * Sample_rate
@@ -362,8 +363,8 @@ def cnut():
 
 
     def Inst(Source, freq, df, phi, phase, starpoint):
-        return(Source * np.sin((2 * math.pi * freq * df) + math.radians(phi) + math.radians(phase)
-                           + math.radians(starpoint)))
+        return(Source * np.sin((2 * math.pi * freq * df) + (math.radians(phi) + math.radians(phase)
+                           + math.radians(starpoint)) % 360))
 
     def int_conv(df, Min, Range, Rec_dec):
         return((((df - Min)/Range) * Rec_dec).astype('int'))
